@@ -7,7 +7,10 @@ The primary license for my own sources is described below.
 
 The MIT License (MIT)
 
-Copyright (c) 2018 erukiti BTC: 1BRCrrHj46RgtszSp83pUdAMF5TpuZgghm
+Copyright (c) 2018 erukiti
+
+Donation BTC: 1BRCrrHj46RgtszSp83pUdAMF5TpuZgghm
+         Monacoin: MUgG6ZC1DqiRSYgKW7vr8FtVL7eYHagdoL
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

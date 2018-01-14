@@ -22,6 +22,7 @@ $ ext install ya-language-review
 # Donation
 
 BTC: 1BRCrrHj46RgtszSp83pUdAMF5TpuZgghm
+Monacoin: MUgG6ZC1DqiRSYgKW7vr8FtVL7eYHagdoL
 
 # License
 
