@@ -2,7 +2,7 @@
   "name": "ya-language-review",
   "displayName": "yet another Re:VIEW extension",
   "description": "yet another Re:VIEW extension for Visual Studio Code",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "main": "./out/extension",
   "repository": {
     "type": "git",

@@ -7,8 +7,6 @@ This extension allows you to preview your [Re:VIEW](https://github.com/kmuto/rev
 * Live preview
 * Syntax highlighting
 
-![Preview](images/preview.png)
-
 # Motivation
 
 Enhanced format compatibility with original Re:VIEW.
