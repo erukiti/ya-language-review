@@ -1,8 +1,29 @@
 {
   "name": "ya-language-review",
-  "displayName": "yet another Re:VIEW plugin",
-  "description": "",
-  "version": "0.0.1",
+  "displayName": "yet another Re:VIEW extension",
+  "description": "yet another Re:VIEW extension for Visual Studio Code",
+  "version": "0.0.2",
+  "main": "./out/extension",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/erukiti/ya-language-review.git"
+  },
+  "bugs": {
+    "url": "https://github.com/erukiti/ya-language-review/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "Re:VIEW",
+    "review",
+    "preview",
+    "vscode",
+    "DTP"
+  ],
+  "author": {
+    "email": "erukiti+github@gmail.com",
+    "name": "erukiti - SASAKI Shunsuke"
+  },
+  "homepage": "https://github.com/erukiti/ya-language-review/blob/master/README.md",
   "publisher": "erukiti",
   "engines": {
     "vscode": "^1.19.0"
@@ -10,7 +31,6 @@
   "categories": [
     "Languages"
   ],
-  "main": "./out/extension",
   "activationEvents": [
     "onLanguage:review",
     "onCommand:review.showPreview"
@@ -35,7 +55,24 @@
         ],
         "configuration": "./review.configuration.json"
       }
-    ]
+    ],
+    "grammars": [{
+      "language": "review",
+      "scopeName": "text.review",
+      "path": "./syntaxes/review.tmLanguage"
+    }],
+    "menus": {
+      "editor/title": [{
+          "when": "resourceLangId == review",
+          "command": "review.showPreview",
+          "group": "navigation"
+      }],
+      "explorer/context": [{
+          "when": "resourceLangId == review",
+          "command": "review.showPreview",
+          "group": "navigation"
+      }]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",

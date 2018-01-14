@@ -21,7 +21,6 @@ export function activate(context: vscode.ExtensionContext) {
   })
 
   const showPreview = vscode.commands.registerCommand('review.showPreview', uri => {
-    console.log('command')
     if (!isReview(context)) {
       vscode.window.showInformationMessage('Not Re:VIEW file')
       return
