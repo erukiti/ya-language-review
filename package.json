@@ -2,7 +2,7 @@
   "name": "ya-language-review",
   "displayName": "yet another Re:VIEW extension",
   "description": "yet another Re:VIEW extension for Visual Studio Code",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "./out/extension",
   "repository": {
     "type": "git",
@@ -98,6 +98,6 @@
     "vscode": "^1.1.6"
   },
   "dependencies": {
-    "shell-escape": "^0.2.0"
+    "any-shell-escape": "^0.1.1"
   }
 }

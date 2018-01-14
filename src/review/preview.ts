@@ -5,7 +5,7 @@ import * as path from 'path'
 import * as util from 'util'
 
 import * as vscode from 'vscode'
-const shellescape = require('shell-escape')
+const shellescape = require('any-shell-escape')
 
 export const PREVIEW_URI = vscode.Uri.parse('review-preview://authority/review-preview')
 

@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
     return vscode.commands
       .executeCommand('vscode.previewHtml', PREVIEW_URI, vscode.ViewColumn.Two, 'Re:VIEW preview')
-      .then(success => console.log(success), err => vscode.window.showErrorMessage(err))
+      .then(success => {}, err => vscode.window.showErrorMessage(err))
   })
 
   context.subscriptions.push(previewRegistration, showPreview)
