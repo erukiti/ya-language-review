@@ -9,13 +9,13 @@ export function activate(context: vscode.ExtensionContext) {
   const previewRegistration = vscode.workspace.registerTextDocumentContentProvider('review-preview', previewProvider)
 
   vscode.workspace.onDidChangeTextDocument((ev: vscode.TextDocumentChangeEvent) => {
-    if (ev.document === vscode.window.activeTextEditor.document) {
+    if (ev.document === vscode.window.activeTextEditor.document && isReview(context)) {
       previewProvider.update(PREVIEW_URI)
     }
   })
 
   vscode.window.onDidChangeTextEditorSelection((ev: vscode.TextEditorSelectionChangeEvent) => {
-    if (ev.textEditor === vscode.window.activeTextEditor) {
+    if (ev.textEditor === vscode.window.activeTextEditor && isReview(context)) {
       previewProvider.update(PREVIEW_URI)
     }
   })

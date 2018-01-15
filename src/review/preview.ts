@@ -3,6 +3,7 @@ import * as util from 'util'
 
 import * as vscode from 'vscode'
 
+import { getOutputChannel } from '../utils'
 import { execReviewCheck, execReviewCompile } from './execute'
 
 export const PREVIEW_URI = vscode.Uri.parse('review-preview://authority/review-preview')
@@ -46,6 +47,11 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
         html += '<style type="text/css">body {color: #000; background: #fff;}</style>'
         return html
       })
-      .catch(err => `<tt>${err.toString().replace(/[\r\n]/g, '<br>')}</tt>`)
+      .catch(err => {
+        const channel = getOutputChannel()
+        channel.appendLine(err.toString())
+        channel.show(true)
+        return `<tt>${err.toString().replace(/[\r\n]/g, '<br>')}</tt>`
+      })
   }
 }
