@@ -3,25 +3,25 @@
 import * as vscode from 'vscode'
 
 import { isReview, PREVIEW_URI, ReviewPreviewProvider } from './review'
+import { syntaxCheck } from './review/diagnostic'
 
 export function activate(context: vscode.ExtensionContext) {
   const previewProvider = new ReviewPreviewProvider()
   const previewRegistration = vscode.workspace.registerTextDocumentContentProvider('review-preview', previewProvider)
 
-  vscode.workspace.onDidChangeTextDocument((ev: vscode.TextDocumentChangeEvent) => {
-    if (ev.document === vscode.window.activeTextEditor.document && isReview(context)) {
-      previewProvider.update(PREVIEW_URI)
+  const update = () => {
+    if (!isReview()) {
+      return
     }
-  })
+    previewProvider.update(PREVIEW_URI)
+    syntaxCheck(vscode.window.activeTextEditor.document.fileName)
+  }
 
-  vscode.window.onDidChangeTextEditorSelection((ev: vscode.TextEditorSelectionChangeEvent) => {
-    if (ev.textEditor === vscode.window.activeTextEditor && isReview(context)) {
-      previewProvider.update(PREVIEW_URI)
-    }
-  })
+  vscode.workspace.onDidOpenTextDocument(update)
+  vscode.workspace.onDidSaveTextDocument(update)
 
   const showPreview = vscode.commands.registerCommand('review.showPreview', uri => {
-    if (!isReview(context)) {
+    if (!isReview()) {
       vscode.window.showInformationMessage('Not Re:VIEW file')
       return
     }

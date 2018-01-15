@@ -4,7 +4,7 @@ import * as util from 'util'
 import * as vscode from 'vscode'
 
 import { getOutputChannel } from '../utils'
-import { execReviewCheck, execReviewCompile } from './execute'
+import { execReviewCompile } from './execute'
 
 export const PREVIEW_URI = vscode.Uri.parse('review-preview://authority/review-preview')
 
@@ -25,13 +25,6 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
     const textEditor = vscode.window.activeTextEditor
     const fileDir = path.dirname(textEditor.document.fileName)
 
-    // execReviewCheck(textEditor.document.fileName)
-    //   .then(({ stdout, stderr }) => {
-    //     console.log('o', stdout)
-    //     console.log('e', stderr)
-    //   })
-    //   .catch(err => console.log('e', err))
-
     return execReviewCompile(textEditor.document.fileName)
       .then(({ stdout, stderr }) => {
         if (stdout === '') {
@@ -48,9 +41,9 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
         return html
       })
       .catch(err => {
-        const channel = getOutputChannel()
-        channel.appendLine(err.toString())
-        channel.show(true)
+        // const channel = getOutputChannel()
+        // channel.appendLine(err.toString())
+        // channel.show(true)
         return `<tt>${err.toString().replace(/[\r\n]/g, '<br>')}</tt>`
       })
   }
