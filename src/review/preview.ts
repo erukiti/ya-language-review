@@ -1,11 +1,9 @@
-import * as childProcess from 'child_process'
-import * as fs from 'fs'
-import * as os from 'os'
 import * as path from 'path'
 import * as util from 'util'
 
 import * as vscode from 'vscode'
-const shellescape = require('any-shell-escape')
+
+import { execReviewCompile } from './execute'
 
 export const PREVIEW_URI = vscode.Uri.parse('review-preview://authority/review-preview')
 
@@ -22,31 +20,21 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
     return this._onDidChange.event
   }
 
-  public provideTextDocumentContent(uri) {
+  public async provideTextDocumentContent(uri) {
     const textEditor = vscode.window.activeTextEditor
     const fileDir = path.dirname(textEditor.document.fileName)
-    return new Promise<string>((resolve, reject) => {
-      childProcess.exec(
-        `review compile --target html ${shellescape([textEditor.document.fileName])}`,
-        (err, stdout, stderr) => {
-          if (err) {
-            reject(err)
-            return
-          }
-          if (stdout === '') {
-            resolve(stderr)
-            return
-          }
-          const html = stdout.replace(re, (_, p1, p2, p3) => {
-            if (p2.substr(0, 1) === '/') {
-              return [p1, vscode.Uri.file(p2), p3].join('')
-            } else {
-              return [p1, vscode.Uri.file(path.join(fileDir, p2)), p3].join('')
-            }
-          })
-          resolve(html + '<style type="text/css">body {color: #000; background: #fff;}</style>')
-        }
-      )
+    const { stdout, stderr } = await execReviewCompile(textEditor.document.fileName)
+    if (stdout === '') {
+      return stderr
+    }
+    let html = stdout.replace(re, (_, p1, p2, p3) => {
+      if (p2.substr(0, 1) === '/') {
+        return [p1, vscode.Uri.file(p2), p3].join('')
+      } else {
+        return [p1, vscode.Uri.file(path.join(fileDir, p2)), p3].join('')
+      }
     })
+    html += '<style type="text/css">body {color: #000; background: #fff;}</style>'
+    return html
   }
 }
