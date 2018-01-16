@@ -2,12 +2,18 @@
 
 import * as vscode from 'vscode'
 
-import { isReview, PREVIEW_URI, ReviewPreviewProvider } from './review'
+import { detectReview, isReview, PREVIEW_URI, ReviewPreviewProvider } from './review'
 import { syntaxCheck } from './review/diagnostic'
 
-export function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext) {
+  const reviewVersion = await detectReview()
   const previewProvider = new ReviewPreviewProvider()
   const previewRegistration = vscode.workspace.registerTextDocumentContentProvider('review-preview', previewProvider)
+
+  const statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
+  statusbar.command = 'review.showPreview'
+  statusbar.text = `Re:VIEW ${reviewVersion}`
+  statusbar.show()
 
   const update = () => {
     if (!isReview()) {
@@ -30,5 +36,5 @@ export function activate(context: vscode.ExtensionContext) {
       .then(success => {}, err => vscode.window.showErrorMessage(err))
   })
 
-  context.subscriptions.push(previewRegistration, showPreview)
+  context.subscriptions.push(previewRegistration, showPreview, statusbar)
 }
