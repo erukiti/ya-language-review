@@ -3,13 +3,12 @@ const shellescape = require('any-shell-escape')
 
 const exec = (cmd: string, shell: string, shellopt: string) => {
   return new Promise<{ stdout; stderr }>((resolve, reject) => {
-    childProcess.execFile(shell, [shellopt, cmd], (err, stdout, stderr) => {
-      if (err) {
-        reject(err)
-      } else {
-        resolve({ stdout, stderr })
-      }
-    })
+    try {
+      const stdout = childProcess.execFileSync(shell, [shellopt, cmd], {})
+      resolve({ stdout, stderr: '' })
+    } catch (e) {
+      reject(e)
+    }
   })
 }
 
@@ -39,7 +38,7 @@ interface ReviewDetection {
 
 const detect = async (shell: string, shellopt: string, errors: Error[]) => {
   const rubyVersion = await exec('ruby --version', shell, shellopt)
-    .then(({ stdout }) => stdout.trim())
+    .then(({ stdout }) => stdout.toString().trim())
     .catch(err => {
       errors.push(err)
       return null

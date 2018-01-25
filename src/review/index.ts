@@ -1,7 +1,8 @@
 import * as vscode from 'vscode'
 
 import { getOutputChannel } from '../utils'
-import { detectReview, execReviewCheck, execReviewCompile } from './execute'
+import { syntaxCheck } from './diagnostic'
+import { detectReview, execReviewCompile } from './execute'
 
 export * from './preview'
 
@@ -12,10 +13,11 @@ export const isReview = () => {
 export class Review {
   private _shell: string
   private _shellopt: string
+  public rubyVersion: string
+  public reviewVersion: string
 
   public async detect() {
     const { detections, errors } = await detectReview()
-    console.log(detections)
 
     const channel = getOutputChannel()
     channel.show(true)
@@ -30,6 +32,8 @@ export class Review {
 
       this._shell = detections[0].shell
       this._shellopt = detections[0].shellopt
+      this.rubyVersion = detections[0].rubyVersion
+      this.reviewVersion = detections[0].reviewVersion
 
       return true
     } else {
@@ -43,5 +47,9 @@ export class Review {
 
   public compile(filename: string) {
     return execReviewCompile(filename, this._shell, this._shellopt)
+  }
+
+  public syntaxCheck(filename: string) {
+    return syntaxCheck(filename, this._shell, this._shellopt)
   }
 }

@@ -2,7 +2,7 @@ import * as vscode from 'vscode'
 
 import { execReviewCheck } from './execute'
 
-const reError = /^ERROR: (.+\.re):([0-9]+): error: (.*)$/
+const reError = /^(.+\.re):([0-9]+): error: (.*)$/
 export const reviewErrorToDiagnostics = (errString: string) => {
   const diagnostics: vscode.Diagnostic[] = []
   errString.split(/[\r\n]+/).forEach(line => {
@@ -17,8 +17,8 @@ export const reviewErrorToDiagnostics = (errString: string) => {
   return diagnostics
 }
 
-export const syntaxCheck = (filename: string) => {
-  execReviewCheck(filename, 'bash', '-c')
+export const syntaxCheck = (filename: string, shell: string, shellopt: string) => {
+  execReviewCheck(filename, shell, shellopt)
     .then(() => {
       vscode.languages.createDiagnosticCollection('Re:VIEW').set(vscode.window.activeTextEditor.document.uri, [])
     })

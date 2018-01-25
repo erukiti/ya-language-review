@@ -33,6 +33,8 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
     return this._review
       .compile(textEditor.document.fileName)
       .then(({ stdout, stderr }) => {
+        stdout = stdout.toString()
+        stderr = stderr.toString()
         if (stdout === '') {
           return stderr
         }
