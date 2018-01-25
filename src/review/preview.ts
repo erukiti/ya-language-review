@@ -4,7 +4,7 @@ import * as util from 'util'
 import * as vscode from 'vscode'
 
 import { getOutputChannel } from '../utils'
-import { execReviewCompile } from './execute'
+import { Review } from './index'
 
 export const PREVIEW_URI = vscode.Uri.parse('review-preview://authority/review-preview')
 
@@ -12,6 +12,11 @@ const re = /((?:src|href)=[\'\"])((?!http|\\\/).*?)([\'\"])/gi
 
 export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider {
   private _onDidChange = new vscode.EventEmitter<vscode.Uri>()
+  private _review: Review
+
+  constructor(review: Review) {
+    this._review = review
+  }
 
   public update(uri: vscode.Uri) {
     this._onDidChange.fire(uri)
@@ -25,7 +30,8 @@ export class ReviewPreviewProvider implements vscode.TextDocumentContentProvider
     const textEditor = vscode.window.activeTextEditor
     const fileDir = path.dirname(textEditor.document.fileName)
 
-    return execReviewCompile(textEditor.document.fileName)
+    return this._review
+      .compile(textEditor.document.fileName)
       .then(({ stdout, stderr }) => {
         if (stdout === '') {
           return stderr

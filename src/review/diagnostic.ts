@@ -18,7 +18,7 @@ export const reviewErrorToDiagnostics = (errString: string) => {
 }
 
 export const syntaxCheck = (filename: string) => {
-  execReviewCheck(filename)
+  execReviewCheck(filename, 'bash', '-c')
     .then(() => {
       vscode.languages.createDiagnosticCollection('Re:VIEW').set(vscode.window.activeTextEditor.document.uri, [])
     })

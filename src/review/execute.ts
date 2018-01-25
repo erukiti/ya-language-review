@@ -1,11 +1,9 @@
 import * as childProcess from 'child_process'
 const shellescape = require('any-shell-escape')
 
-import { getOutputChannel } from '../utils'
-
-const exec = (cmd: string) => {
+const exec = (cmd: string, shell: string, shellopt: string) => {
   return new Promise<{ stdout; stderr }>((resolve, reject) => {
-    childProcess.exec(cmd, (err, stdout, stderr) => {
+    childProcess.execFile(shell, [shellopt, cmd], (err, stdout, stderr) => {
       if (err) {
         reject(err)
       } else {
@@ -15,34 +13,43 @@ const exec = (cmd: string) => {
   })
 }
 
-export const execReviewCompile = (filename: string) => {
+export const execReviewCompile = (filename: string, shell: string, shellopt: string) => {
   const cmd = `review compile --target html ${shellescape([filename])}`
   console.log(cmd)
-  return exec(cmd)
+  return exec(cmd, shell, shellopt)
 }
 
-export const execReviewCheck = (filename: string) => {
+export const execReviewCheck = (filename: string, shell: string, shellopt: string) => {
   const cmd = `review compile -c ${shellescape([filename])}`
   console.log(cmd)
-  return exec(cmd)
+  return exec(cmd, shell, shellopt)
 }
 
 const reReviewVersion = /([0-9]+\.[0-9]+\.[0-9]+)/
-export const detectReview = async () => {
-  const rubyIsInstalled = await exec('ruby --version')
-    .then(({ stdout, stderr }) => {
-      return true
-    })
-    .catch(err => {
-      const channel = getOutputChannel()
-      channel.appendLine('Ruby is not detected.')
-      channel.appendLine(err.toString('utf8'))
-      channel.show(true)
-      return false
-    })
 
-  const reviewVersion = await exec('review compile --version')
-    .then(({ stdout, stderr }) => {
+interface ReviewDetection {
+  detections: Array<{
+    shell: string
+    shellopt: string
+    rubyVersion: string
+    reviewVersion: string
+  }>
+  errors?: Error[]
+}
+
+const detect = async (shell: string, shellopt: string, errors: Error[]) => {
+  const rubyVersion = await exec('ruby --version', shell, shellopt)
+    .then(({ stdout }) => stdout.trim())
+    .catch(err => {
+      errors.push(err)
+      return null
+    })
+  if (!rubyVersion) {
+    return null
+  }
+
+  const reviewVersion = await exec('review compile --version', shell, shellopt)
+    .then(({ stdout }) => {
       const matched = reReviewVersion.exec(stdout)
       if (matched) {
         return matched[1]
@@ -50,11 +57,27 @@ export const detectReview = async () => {
       return null
     })
     .catch(err => {
-      const channel = getOutputChannel()
-      channel.appendLine('Re:VIEW is not detected.')
-      channel.appendLine(err.toString('utf8'))
-      channel.show(true)
+      errors.push(err)
       return null
     })
-  return reviewVersion
+  if (!reviewVersion) {
+    return null
+  }
+
+  return { shell, shellopt, rubyVersion, reviewVersion }
+}
+
+export const detectReview = async (): Promise<ReviewDetection> => {
+  const shells = [{ shell: 'bash', shellopt: '-c' }]
+  const errors = []
+  const detections = []
+
+  for (const shell of shells) {
+    const detection = await detect(shell.shell, shell.shellopt, errors)
+    if (detection) {
+      detections.push(detection)
+    }
+  }
+
+  return { detections, errors }
 }

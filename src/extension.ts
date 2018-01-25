@@ -2,17 +2,18 @@
 
 import * as vscode from 'vscode'
 
-import { detectReview, isReview, PREVIEW_URI, ReviewPreviewProvider } from './review'
+import { isReview, PREVIEW_URI, Review, ReviewPreviewProvider } from './review'
 import { syntaxCheck } from './review/diagnostic'
 
 export async function activate(context: vscode.ExtensionContext) {
-  const reviewVersion = await detectReview()
-  const previewProvider = new ReviewPreviewProvider()
+  const review = new Review()
+  const isDetected = await review.detect()
+  const previewProvider = new ReviewPreviewProvider(review)
   const previewRegistration = vscode.workspace.registerTextDocumentContentProvider('review-preview', previewProvider)
 
   const statusbar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left)
   statusbar.command = 'review.showPreview'
-  statusbar.text = `Re:VIEW ${reviewVersion}`
+  // statusbar.text = `Re:VIEW ${reviewVersion}`
   statusbar.show()
 
   const update = () => {
