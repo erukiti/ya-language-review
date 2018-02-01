@@ -1,0 +1,5 @@
+review (1.0+20120212) unstable; urgency=low
+
+  * Initial Release. (closes: #XXXX)
+
+ -- Kenshi Muto <kmuto@debian.org>  Sun, 12 Feb 2012 15:38:55 +0900

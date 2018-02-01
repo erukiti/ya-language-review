@@ -17,8 +17,8 @@ export const reviewErrorToDiagnostics = (errString: string) => {
   return diagnostics
 }
 
-export const syntaxCheck = (filename: string, shell: string, shellopt: string) => {
-  execReviewCheck(filename, shell, shellopt)
+export const syntaxCheck = (filename: string, prefix: string = '') => {
+  execReviewCheck(filename, prefix)
     .then(() => {
       vscode.languages.createDiagnosticCollection('Re:VIEW').set(vscode.window.activeTextEditor.document.uri, [])
     })

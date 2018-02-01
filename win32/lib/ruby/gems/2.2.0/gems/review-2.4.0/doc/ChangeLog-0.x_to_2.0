@@ -1,0 +1,2489 @@
+Fri Apr 29 23:11:06 2016  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Release 2.0.0
+
+Mon Apr  4 14:42:51 2016  Kenshi Muto  <kmuto@debian.org>
+
+	* config.yml:
+	  support "inherit: YAMLfilename" parameter in config.yml to
+	  read other YAML file (such as common.yml.)
+
+Sun Apr 3 17:21:25 2016  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* epubmaker:
+	  add direction in default setting.
+
+Sun Apr 3 11:04:53 2016  Kenshi Muto  <kmuto@debian.org>
+
+	* epubmaker:
+	  accept hash value for 'booktitle' and some other parameters,
+	  as same as 'aut:' (author value).
+	  This change aims to set "file-as" variable to book title.
+
+Sun Apr 3 11:03:47 2016  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	use SecureRandom.uuid instead of ruby-uuid
+
+Fri Mar 25 22:16:33 2016  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-preproc:
+	  load review-preproc-ext.rb if it exists, to overwrite
+	  review-preproc.
+
+Sun Dec 27 16:25:45 2015  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Release 1.7.2
+
+Sun Nov 29 23:12:29 2015  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Release 1.7.1
+
+Thu Oct 29 13:58:22 2015  KADO Masanori  <kdmsnr@gmail.com>
+
+	* Release 1.7.0
+
+Mon Jun 29 18:16:06 2015  KADO Masanori  <kdmsnr@gmail.com>
+
+	* Release 1.6.0
+
+Sat Feb 28 19:51:29 2015  KADO Masanori  <kdmsnr@gmail.com>
+
+	* Release 1.5.0.
+
+Sun Feb  1 20:17:22 2015  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker:
+	  Introduce structured YAML tree.
+
+	  Some epubmaker-specific configurations are moved under "epubmaker:".
+	  You can still keep to use parameters for compatibility,
+	  but you'll get a 'deprecated' warning message.
+	
+	epubmaker:
+	  ncxindent: ...
+	  flattoc: ...
+	  flattocindent: ...
+	  hook_beforeprocess: ...
+	  hook_afterfrontmatter: ...
+	  hook_afterbody: ...
+	  hook_afterbackmatter: ...
+	  hook_aftercopyimage] ...
+	  hook_prepack] ...
+	  rename_for_legacy: ...
+	  zip_stage1: ...
+	  zip_stage2: ...
+	  zip_addpath: ...
+	  verify_target_images: ...
+	  force_include_images: ...
+	  cover_linear: ...
+
+	* bin/review-pdfmaker:
+	  Introduce structured YAML tree and new hooks.
+
+	pdfmaker:
+	  hook_beforetexcompile: ... (before LaTeX compiling)
+	  hook_aftertexcompile: ... (after all of LaTeX compiling)
+	  hook_afterdvipdf: ... (after dvipdfm conversion)
+
+	  These hooks get two arguments. $1 is temporary build directory.
+	  $2 is the base directory (where you executed review-pdfmaker).
+
+Mon Jan 26 20:29:30 2015  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/i18n.rb:
+	  To initialize after loading config.yml, modifiy API I18n.setup
+	  and remove I18n.i18n.
+
+Tue Jan 13 19:26:04 2015  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/pdfmaker.rb:
+	  review-pdfmaker removes a PDF file if already exists
+
+	  As a PDF file can be re-generated from source files, review-pdfmaker
+	  remove the file when the file exists rather than exiting with error.
+	  review-epubmaker do the same way.
+
+Tue Dec  9 15:25:38 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/configure.rb:
+	  update default value of "toc" as nil.
+	  If you need TOC page in body, you should add "toc: true" in config.yml (EPUB2/3, LaTeX).
+
+Tue Dec  9 10:27:21 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-vol:
+	  add --yaml option to specify config.yml
+	  add a parameter `page_metric` in config.yml
+
+Sun Dec  7 16:57:01 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/chapter.rb, test/test_book_chapter.rb:
+	  remove Chapter.intern_pathes.
+	  To get chapters, use Book::Base.load and Book::Base#chapter.
+
+Mon Nov 17 09:28:21 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book/chapter.rb, lib/review/book/index.rb:
+	fix @<hd> to show appendix correctly with respecting
+	appendix_format yaml parameter.
+
+Wed Nov  5 19:11:02 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, test/test_idgxmlbuilder.rb:
+	  stop providing a index from @<ttb>.
+	  That behavior just makes a confuse.
+
+Wed Oct 29 18:54:28 2014  KADO Masanori  <kdmsnr@gmail.com>
+
+	* Release 1.4.0.
+
+Thu Sep 18 13:48:24 2014  KADO Masanori  <kdmsnr@gmail.com>
+
+	* bin/review-init, doc/format.rdoc, lib/review/htmlbuilder.rb, lib/review/pdfmaker.rb, lib/review/tocprinter.rb, lib/review/review.tex.erb: change the name of layout template files to "layout.html.erb" and "layout.tex.erb"
+
+Wed Aug 20 17:15:04 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/chapter.rb: remove unused method Chapter.for_stdin and Chapter.for_path
+
+Wed Aug 20 01:51:02 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/parameters.rb: remove ReVIEW::Book::Parameters
+
+Wed Aug 20 00:30:07 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/parameters.rb, lib/review/book/base.rb,
+	  test/test_book.rb, test/test_book_parameter.rb:
+
+	  remove unused method: ReVIEW::Book::Parameters.default and ReVIEW::Book::Parameters.load
+
+Thu Aug  7 16:25:23 2014  KADO Masanori  <kdmsnr@gmail.com>
+
+	* lib/review/book/base.rb (Base#prefaces, postscripts):
+	  remove implicit prefaces and postscripts.
+
+Wed Aug  6 18:55:31 2014  KADO Masanori  <kdmsnr@gmail.com>
+
+	* bin/review-catalog-converter: add review-catalog-converter for
+	  converting old style catalog files into a new style catalog.yml file.
+
+Thu Jul 31 15:05:34 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb, lib/review/idgxmlbuilder.rb: 
+	  provides warning message if image couldn't be found.
+
+Sun Jun 29 22:12:58 2014  Masanori Kado <kdmsnr@gmail.com>
+
+	* Release 1.3.0.
+
+Sun Jun 29 10:40:02 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* Now review-epubmaker-ng becomes review-epubmaker.
+	  Previous review-epubmaker is renamed to review-epubmaker-legacy.
+	  We believe new review-epubmaker has a compatibility with
+	  previous version, but please inform us if you meet a different
+	  behavior. See doc/libepubmaker/config.yml for details of
+	  configurations.
+
+Fri Jun 27 22:49:17 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/epubv2.rb: insert dummy <span> element with
+	  double-width space in tree toc when <li> element has only
+	  child <ol> element. Closes #285.
+
+Tue Jun 17 10:36:31 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/base.rb:
+	  remove (rarely used) features.
+	   * ignore ./config.rb file
+	   * ignore ./lib/review/* files
+	   * ignore ./*/*.re and ./*/*/*.re files
+
+Wed Jun 11 20:15:00 2014  KADO Masanori  <kdmsnr@gmail.com>
+
+	* lib/review/book/base.rb (ReVIEW::Book::Base#config):
+	  Rename method and instance variable from param to config.
+
+Sun Jun  8 22:55:39 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb, lib/review/htmlutils.rb,
+	  test/test_htmlbuilder.rb, test/test_htmlutils.rb:
+	  normalize html ID. ID must be /\A[a-z][0-9a-z_.-]*/
+	  with case insensitive.
+
+Sun Jun  8 22:04:29 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker, bin/review-pdfmaker,
+	  lib/review/epubmaker.rb, lib/review/makerhelper.rb:
+	  review-*maker calls review-compile of exactly same
+	  directory. Closes #228, #288.
+
+Sat Jun  7 00:37:17 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb:
+	  use the value of htmlext variable for html file
+	  extension, instead of static ".html".
+
+Sat Jun  7 00:06:37 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/content.rb, lib/epubmaker/epubv3.rb,
+	  lib/review/epubmaker.rb:
+	  add properties='svg' attribute to OPF item of HTML
+	  which links SVG file (to satisfy EPUB3 spec.)
+
+Wed Jun  4 12:05:36 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* add safe mode.
+          This feature checks a numeric value of REVIEW_SAFE_MODE
+	  environment variable.
+           bit1(+1) : blocks any hooks of epubmaker.
+           bit2(+2) : blocks review-ext.rb.
+           bit3(+4) : blocks user's custom html layouts.
+
+Mon Jun  2 14:23:28 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/libepubmaker/config.yml, lib/epubmaker/producer.rb,
+	  lib/review/epubmaker.rb: implement strict image finder mode
+	  for review-epubmaker-ng.
+	  review-epubmaker-ng picks up the images which are used in each
+	  HTMLs and CSSs by declareing 'verify_target_images: true' in yml.
+
+Thu May 28 00:51:08 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/image_finder.rb:
+	  add new class ReVIEW::Book::ImageFinder extracted from ReVIEW::Book::Index
+
+	  Index#find_pathes moves to ImageFinder#find_path, and select only one (first) path
+	  because rest pathes is not used.
+	  ImageFinder is an independent class, so you can get image pathes without ImageIndex.
+
+
+Sat Apr 12 16:31:11 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book/index.rb: allow same @<icon>s in one document (remove warning)
+
+Thu Apr  3 19:03:03 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* change all .yaml to .yml. (#244)
+	  locale.yaml is still supported for backward compatibility.
+	  (but locale.yml is preferred.)
+
+Thu Apr  3 18:41:42 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/latexbuilder.rb: escape idx string.
+
+Thu Apr  3 09:53:26 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker: add zip_addpath parameter to include
+	  extra pathes in ePUB file.
+	* Rename sample YAML file's extension from .yaml to .yml.
+
+Wed Apr  2 22:34:56 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Release 1.2.0.
+
+Tue Mar 25 19:11:36 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book/index.rb, bin/review-compile:
+	  improve the image file finder.
+	  Now review-compile finds a image file from:
+	  1. <imgdir>/<builder>/<chapid>/<id>.<ext>
+	  2. <imgdir>/<builder>/<chapid>-<id>.<ext>
+	  3. <imgdir>/<builder>/<id>.<ext>
+	  4. <imgdir>/<chapid>/<id>.<ext>
+	  5. <imgdir>/<chapid>-<id>.<ext>
+	  6. <imgdir>/<id>.<ext>
+
+Sun Mar 23 23:54:27 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/libepubmaker/config.yaml, lib/epubmaker/epubv2.rb,
+	  lib/epubmaker/epubv3.rb, lib/epubmaker/poducer.rb,
+	  test/test_epubmaker.rb: support both hierarchy toc and
+	  flat toc.
+
+Sun Mar 23 18:05:53 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/libepubmaker/config.yaml, lib/epubmaker/epubv2.rb,
+	  lib/epubmaker/epubv3.rb, lib/epubmaker/poducer.rb,
+	  lib/review/epubmaker.rb: use <bookname>-toc.<htmlext> for
+	  ePUB2 as same as ePUB3. dropped tocfile parameter.
+	  Closes: #237
+
+Tue Mar 18 18:37:12 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/libepubmaker/config.yaml: add descriptions of some parameters.
+
+Tue Mar 18 17:57:23 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* epubmaker/content.rb, epubmaker/producer.rb, epubmaker.rb:
+	  add embeded font support. By default, review-epubmaker-ng
+	  takes fonts/*.{otf|ttf|woff} and images/*.{otf|ttf|woff}.
+	  You can change this behaviour by modifying image_ext, font_ext,
+	  fontdir, and imagedir in config.yaml.
+
+Thu Mar 13 11:34:15 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlutils.rb, lib/review/epubmaker.rb, test_htmlbuilder.rb: use pygments higlighting only if "pygments: true" is defined.
+
+Thu Mar 13 09:52:50 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* epubmaker/epubv3.rb: <nav> needs own epub namespace. <nav> should use <ol>, not <ul>.
+
+Thu Mar 13 00:36:58 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubmaker.rb: remove unnecessary escape character for review-epubmaker-ng.
+
+Wed Mar 12 20:14:22 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* epubmaker/epubv2.rb, epubmaker/producer.rb, review/epubmaker.rb:
+	  - use system() instead of exec() for review-epubmaker-ng.
+	  - hand over stylesheet values to review-compile in review-epubmaker-ng.
+
+Wed Mar 12 20:03:12 2014  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: support LuaLaTeX.
+
+Sat Mar  8 23:16:52 2014  Kenshi Muto  <kmuto@debian.org>
+
+	* 'ReVIEW' has been renamed to 'Re:VIEW'.
+
+Tue Oct  8 18:57:54 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/htmlbuilder.rb:
+	  support epub:type="noteref" and epub:type="footnote" in EPUB3.
+
+Tue Oct  8 13:47:01 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker: support MathML in EPUB3
+
+Mon Oct  7 22:37:38 2013  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book/compilable.rb:
+	  remove type and label from the extracted title.
+
+	* bin/review-epubmaker:
+	  add prefix 'rv' to internal ID for each converted files.
+	  Closes: #204
+
+	* lib/review/htmlbuilder.rb:
+	  set 'noteref' style class for footnote referers.
+	  Closes: #205
+
+Tue Sep 17 09:25:20 2013  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/builder.rb, lib/review/topbuilder.rb:
+	  force all builders to load compiler.rb.
+
+Sun Sep 15 14:39:43 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-init: fix review-init; it's broken when installed as gem.
+
+Thu Aug 29 21:33:19 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Version bump to 1.1.0.
+
+Sat Jun 29 01:34:14 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/htmlbuilder.rb, lib/review/latexbuilder.rb: 
+
+	  use split_paragraph for //bibpaper block.
+
+Sat Mar 30 03:15:43 2013  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, lib/review/review.tex.erb,
+	  test/test_latexbuilder.rb:
+
+	  move alltt environment into ReVIEW macros
+          (reviewbox, reviewemlist, reviewlist, reviewcmd,
+	   reviewdummyimage.)
+
+	  If you redefine these macros, you should add \begin{alltt}
+	  and \end{alltt} in your definitions.
+
+Sun Mar 24 15:55:43 2013  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, test/test_idgxmlbuilder.rb:
+	  support PART.
+
+Mon Aug 27 20:27:11 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/latexbuilder.rb,
+	  lib/review/topbuilder.rb, test/test_htmlbuilder.rb,
+	  test/test_idgxmlbuilder.rb, test/test_latexbuilder.rb:
+	  Add //centering to centerize contents.
+
+Wed Aug  8 18:47:33 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/idgxmlbuilder.rb:
+	  Add --structuredxml option to produce structured XML for sections.
+
+Sat Jul 14 16:07:54 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/review.tex.erb: \usepackage{jumoline} is optional
+
+Sat Jun 16 00:57:14 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-compile, lib/review/builder.rb:
+	  support --tabwidth=WIDTH option in review-compile
+
+Fri Apr 20 16:07:35 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/epubv*.rb: escape entity strings in meta informations.
+
+Tue Mar 13 02:58:41 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/htmlbuilder.rb: support @<bou> in HTMLBuilder
+
+Tue Mar 13 02:57:24 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: support @<ami> in LATEXBuilder
+
+Sun Feb 12 16:06:52 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: fix ebb and extractbb options for PDF as images
+
+Mon Jan 30 20:39:17 2012  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* Version bump to 1.0.0.
+
+Sat Jan 28 00:28:34 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* //raw supports to indicate builder(s) by using
+	  //raw[|builder,builder| ...]
+	* merge kdmsnr's branch.
+	commit 207c787c961d61bbc517e160effadf417f05e28e
+	unescape in inline_raw: refs #54
+
+Sun Jan 22 19:49:42 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* revert 17b0deb55b599deb1bdfbd6c61957d6edd5977ed change.
+	  It caused a bug that '#@#' was included in paragraphs when
+	  '#@#' was located just after paragraph line.
+
+Sat Jan 14 23:24:52 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/builder.rb, lib/review/htmlbuilder.rb,
+	  lib/review/i18n.yaml, lib/review/idgxmlbuilder.rb,
+	  lib/review/topbuilder.rb: show only counter on
+	  image/list/table caption, if chapter number is
+	  undefined.
+
+Sat Jan 14 22:33:04 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/tocparser.rb: remove BOM (\xEF\xBB\xBF) from
+	  line head to avoid review-index error. Closes #72.
+
+Sat Jan 14 22:02:29 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/preprocessor.rb,
+	  test/test_preprocessor.rb: fix difference of line#
+	  between error output and source file which has comments.
+	  Closes #73.
+
+Mon Jan  2 01:09:58 2012  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder: put <listinfo> to codelist element
+	  (//list) as same as list (//emlist).
+
+Fri Dec 16 01:01:31 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: LATEXBuilder: fix dlist(dd) bug
+
+Sat Nov 12 18:42:24 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker:
+	  LATEXBuilder: appendix and backmatter should be able to redefine
+
+Fri Nov 11 02:45:50 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb:
+	  LATEXBuilder: use \url instead of \href if label is empty
+
+Sat Nov  5 15:37:58 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker, bin/review-pdfmaker:
+	  fixes #50; make name of files generated in review-{epub|pdf}maker same as source filenames
+
+Fri Nov  4 22:39:23 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker:
+	  Force to execute platex command 3 times.
+	  Executing only 2 times, some documents convert into PDF with
+	  invalid page number :-(
+
+Thu Oct 27 16:30:08 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/topbuilder.rb: trivial bug fixes around //raw.
+
+Sun Oct  9 00:43:51 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, lib/review/latexutils.rb:
+	  LATEXBuilder: fix escape in URL (use special method)
+
+Tue Sep 27 21:44:13 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker: default author should be nil
+
+Tue Sep 27 21:36:00 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker: fix Issue #43: fix generating invalid EPUB toc.html file
+
+Tue Sep 27 18:51:27 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/book.rb, bin/review-pdfmaker:
+	  support *.pdf file for images in LATEXBuilder
+
+Tue Sep 27 18:19:20 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker:
+	  support customizing coverfile in LATEXBuilder (same as HTMLBuilder)
+
+Fri Sep 23 22:06:26 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexutils.rb:
+          support MARUSUJI(number in circle) 0-10
+
+Wed Sep 21 19:51:57 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/compiler.rb: fix slow regexp (cf. [ruby-list:48379])
+
+Thu Sep 15 00:28:05 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/builder.rb, lib/review/htmlbuilder.rb,
+	  lib/review/texbuilder.rb, lib/review/idgxmlbuilder.rb,
+	  test/test_htmlbuilder.rb, test/test_latexbuilder.rb,
+	  test/test_idgxmlbuilder.rb: handle metric parameter of
+	  //image and //indepimage more portable.
+	  Builder specific parameter can be specified with prefix
+	  html::, latex::, and idgxml::.
+
+Thu Sep  1 13:21:16 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: support --draft flag.
+	  add @<comment>. //comment and @<comment> will show in the
+	  output when --draft flag is specified. Without this flag
+	  (default), they will be converted to '<!-- -->'.
+
+Thu Sep  1 12:39:54 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: escape html in @<code>.
+
+Mon Aug 29 10:59:15 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker:
+	  add translater in okuduke and titlepage if values["trl"] has value
+	* bin/review-epubmaker:
+	  add translater in okuduke if values["trl"] has value
+
+Fri Aug 26 14:57:35 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: fix some style broken in TeXLive 2011
+	* bin/review-pdfmaker: use extractbb instead of ebb
+
+Sat Aug 13 11:06:17 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker:
+	  fix Issue #34: generating stylesheet with appropriate filename
+
+Sat Aug 11 01:23:00 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* test/test_latexbuilder.rb, lib/review/latexbuilder.rb:
+	  fix //noindent in LATEXBuilder
+
+Sat Jul  2 13:34:00 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, lib/review/compiler.rb, bin/review-compile:
+	  support //comment and @<comment> as PDF Annotation in LATEXBuilder
+
+Sat Jul  2 11:22:53 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmaker, lib/review/htmlbuilder.rb:
+	  fix @<bib> and bib.re support in EPUB
+
+Sun Jun 26 22:38:09 2011  KADO Masanori  <kdmsnr@gmail.com>
+
+	* lib/review/builder.rb, lib/review/compiler.rb, lib/review/index.rb,
+	  lib/review/latexbuilder.rb, lib/review/idgxmlbuilder.rb, lib/review/htmlbuilder.rb:
+	  support //graph
+
+Thu Jun 16 15:59:35 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, test/test_idgxmlbuilder.rb:
+	  <td> has xyh attribution to point cell location and a number
+	  of header lines.
+
+Wed Jun  1 23:32:06 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: <recipe> uses full
+	  width blank instead of tab, because tab breaks
+	  a table element.
+
+Wed Jun  1 18:42:52 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* support caption as optional in //cmd{..} and
+	  //emlist{..}.
+
+Tue May 24 12:57:37 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: Use <lead> element for
+	  //lead and //read by default, to avoid nested <p>
+	  elements.
+
+Wed May 11 14:54:50 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* merge Yutaka HARA's branch.
+	commit b4cf87a791f7dcca475cec9a5e838cc0da09de3b
+	Author: Yutaka HARA <yutaka.hara+github@gmail.com>
+	Date:   Wed May 11 14:28:41 2011 +0900
+
+	bin/review-vol: review-vol should accept --directory
+
+Mon Apr 25 07:22:39 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/htmlbuilder.rb:
+	  add --htmlversion option. This parameter takes the
+	  HTML version value 4 or 5.
+	* bin/review-epubmaker-ng: now works. It gets an ability to
+	  produce EPUB3 book.
+	* lib/epubmaker/epubv3.rb. lib/epubmaker/producer.rb: support
+	  EPUB3.
+	* lib/epubmaker/epubv2.rb: fix indents.
+
+Sat Apr 23 12:15:46 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* Cherry-pick from Kouji Takao's branch.
+	commit 133c44c61da8b1057a6883e95a9165815f163cb4
+	Author: Kouji Takao <kouji@takao7.net>
+	Date:   Sun Jan 2 20:42:40 2011 +0900
+	
+	    display chapter name.
+	
+	commit 35b65a3e13463c54e696c71b6ec92d9c04a036df
+	Author: Kouji Takao <kouji@takao7.net>
+	Date:   Sun Jan 2 20:38:47 2011 +0900
+	
+	    supported book configuration in config.rb.
+	
+	commit 0c493c434bda7bc5b58d5927cc8caedb8da5105c
+	Author: Kouji Takao <kouji@takao7.net>
+	Date:   Sun Jan 2 20:37:56 2011 +0900
+	
+	    supported comment in CHAPS file.
+
+Mon Apr 11 18:41:26 2011  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: add texdocumentclass option in config.yml
+
+Wed Mar 16 16:09:42 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* Mege nari's branch.
+	  - use compile_inline() to caption on //bibpaper.
+
+Fri Feb 25 22:40:18 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* Merge nari's branch.
+	  - add maxwidth for latex indepimage.
+
+Thu Feb  3 23:29:07 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb, lib/review/index.rb: workaround for
+	  inline icon file support. (it still exports duplicate ID warning...)
+
+Sat Jan 29 23:03:37 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* Merge nari's branch.
+	  - add @<bib> //bib to latexbuilder.
+
+Sat Jan 29 19:00:07 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/epubv2.rb: add dc:publisher value in opf file
+	  (same value of prt).
+
+Wed Jan 12 23:49:05 2011  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/epubv2.rb: fix level handling of mytoc.
+
+Mon Dec 20 23:41:04 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker/epubv2.rb: fix indent.
+	* test/test_epubmaker.rb: initial test codes.
+
+Mon Dec 20 00:12:41 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/epubmaker.rb: separate files to content, epubv2, epubv3,
+	  producer, and resource.
+
+Sat Dec 18 10:50:24 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/htmlbuilder.rb,
+	  lib/review/idgxmlbuilder.rb: unify block coding styles and regexp
+	  coding styles.
+	* bin/review-compile: accept multiple stylesheets.
+	  set default values for language and htmlext.
+	  use YAML file by passing --yaml=YAMLFILE option.
+	* lib/review/htmlbuilder.rb: support htmlext and language parameter.
+	  support multiple stylesheets.
+	* lib/epubmaker.rb: new EPUB support library. Not only ReVIEW can
+	  use this library. This library is experimental.
+	* bin/review-epubmaker-ng: experimental alternative implementation
+	  for review-epubmaker using epubmaker.rb. This tools is under
+	  construction and may be changed widely.
+	* doc/libepubmaker/sample.yaml: sample YAML file for epubmaker.rb
+	  library.
+
+Sat Dec 12 09:30:28 2010  KADO Masanori  <kdmsnr@gmail.com>
+
+	* lib/review/compiler.rb: add [/column] notation
+	* test/test_htmlbuilder.rb, test/test_idgxmlbuilder.rb, test/test_latexbuilder.rb: add test for [/column] notation
+	* lib/review/tocparser.rb: ignore [/column] notation for review-index
+	* doc/format.rdoc: add [/column] notation
+
+Sat Dec 11 08:49:48 2010  KADO Masanori  <kdmsnr@gmail.com>
+
+	* bin/review-pdfmaker, lib/review/latexbuilder.rb: add maxwidth
+	for latex image
+	* bin/review-pdfmaker: include image subdir for ebb
+
+Sat Dec 11 02:39:37 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/htmlbuilder.rb: remove empty line after <pre> tag
+
+Thu Dec  9 11:15:11 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/compiler.rb: fix slow regexp for compiling inline
+	  (ex. '@<href>{http://very.long.name/and/missing/close/curly/brace')
+
+Sat Dec  4 00:18:45 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/quickstart.rdoc: created.
+	* lib/review/textbuilder.rb: provide a wrapper of topbuilder.rb.
+	  'review-compile --target text' (or review2text) makes a plain
+	  text file with pseudo tags.
+
+Thu Dec  2 08:23:14 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/latexbuilder.rb: move core tag @<icon> to
+	  compiler.rb.
+	* lib/review/topbuilder.rb, test/test_topbuilder.rb: supports
+          same tags with other builders.
+
+Wed Dec  1 16:41:40 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* VERSION: Version bump to 0.9.0
+
+Wed Dec  1 16:38:34 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* doc/format.txt, doc/format_idg.txt, doc/format_sjis.txt, doc/memo-reviewspec.txt:
+	  delete old docs; see format.rdoc, format_idg.rdoc and
+	  Wiki pages on github.com (https://github.com/kmuto/review/wiki)
+
+Sun Nov 28 14:12:50 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: partially support for metric.
+	* test/test_htmlbuilder.rb, test/idg_xmlbuilder.rb,
+	  test/test_latexbuilder.rb: add test for //indepimage and //image.
+
+Sun Nov 28 01:28:06 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, lib/review/idgxmlbuilder.rb,
+	  lib/review/htmlbuilder.rb, lib/review/builder.rb:
+	   - support metric option of //image
+
+Sat Nov 27 22:59:24 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb: accept space/tab before :
+	  (description list).
+
+Sat Nov 27 22:27:56 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: use <p class="noindent"> for
+	  //noindent. use <p class="flushright"> for //flushright (for
+	  backward compatibility, it can be reverted to older <div> and
+	  <pre> style by setting --deprecated-blocklines.)
+	* test/test_latexbuilder.rb, test/test_htmlbuilder.rb,
+	  test/test_idgbuilder.rb: add flushright and noindent tests.
+	* doc/sample.css: add p, p.noindent, p.flushright, and p.caption.
+
+Sat Nov 27 22:00:20 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-index: deprecate --html option.
+	* bin/review-check: deprecate -s option.
+	* bin/review-preproc: deprecate --final option.
+
+Sat Nov 27 21:40:42 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge kdmsnr's branch.
+	  - add inline_table/list ref to another chapter.
+
+Sat Nov 27 14:58:05 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* Clean up.
+	  - bin/setup.rb: remove obsolete file. use gem or git.
+	  - lib/review/book.rb, test/test_book.rb: remove PARAMS.
+	  - lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	    lib/review/idgxmlbuilder.rb, lib/review/latexbuilder.rb:
+	    support caption in //indepimage.
+	    //numberlessimage aliases of //indepimage.
+	  - bin/review-compile, lib/review/compiler.rb: --hdnumberingmode
+	    is deprecated. use --level option.
+	  - lib/review/book.rb: remove nocode_file and index_file because
+	    they aren't used anymore.
+	  - bin/review-epubmaker: print usage if argument isn't defined.
+
+Sat Nov 27 04:00:01 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: make default LaTeX style much simpler.
+	  - add \reviewmainfont and \reviewtitlefont (you can redifine with \renewcomamnd{})
+	  - delete header/footer definition (you can do it with config.yml)
+
+Mon Nov 22 00:44:20 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: support @<icon>{} in LATEXBuilder
+
+Sun Nov 21 21:50:32 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* test/test_uuid.rb: reduce slow tests. If we use original
+	  uuid.rb without any changes, it's no problem.
+
+Sun Nov 21 15:02:00 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb: add 'ai' to acceptable image file.
+	* lib/review/builder.rb: move find_pathes() and entries() here
+	  from HTMLBuilder.
+	* lib/review/compiler.rb: rescue string() error for TestUnit.
+	* lib/review/htmlbuilder.rb: cleanup.
+	* lib/review/idgxmlbuilder.rb: support both 1.8 and 1.9 in
+	  inline_maru. use find_pathes() of builder for @icon and
+	  //indepimage.
+
+Sun Nov 21 14:22:55 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, test/test_idgxmlbuilder.rb:
+	  refactoring. add some tests.
+
+Wed Nov 17 09:36:50 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge KADO's patch and modify.
+	  - lib/review/idgxmlbuilder.rb, lib/review/htmlbuilder.rb,
+	    lib/review/latexbuilder.rb: //lead, //read, //quote, //note,
+	    //memo, //tip, //info, //planning, //best, //important,
+	    //security, //caution, //term, //link, //notice, //point,
+	    //shoot, //reference, //practice: use normal paragraph
+	    syntax; splitted by empty line.
+	  - bin/review-compile: For backward compatibilty, add
+	    --deprecated-blocklines option.
+
+Wed Nov 17 17:55:42 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexutils.rb, bin/review-pdfmaker,
+	  test/test_latexbuilder.rb:
+	  - \textbackslash -> \reviewbackslash(to replace into yensign) in LATEXBuilder
+          - allow to overwrite review* macro in LATEXBuilder
+
+Sat Nov 13 23:19:25 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* test/test_builder.rb, test/test_htmlbuilder.rb,
+	  test/test_idgxmlbuilder.rb, test/test_latexbuilder.rb:
+	  add some block test codes.
+	* Fix //quote handling of LATEXBuilder.
+
+Sun Nov 14 05:19:53 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* merge KADO's patch.
+	  - test/test_latexbuilder.rb, lib/review/latexbuilder.rb:
+	    //quote allow newlines in LATEXBuilder.
+
+Sat Nov 13 10:33:13 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: round float value for
+	  the compatibility between 1.8 and 1.9.
+
+Thu Nov 11 08:16:10 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* test/test_latexbuilder.rb: test tagged header.
+
+Thu Nov 11 21:34:39 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/latexbuilder.rb:
+	  allow inline tags in captions and headers.
+	* test/test_htmlbuilder.rb: test tagged header.
+
+Mon Nov  8 21:58:27 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge KADO's patch.
+	- lib/review/htmlbuilder.rb: add chap to tabel_header.
+
+Mon Nov  8 21:51:43 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/latexbuilder.rb:
+	  move @<tti>, @<ttb>, @<u>, @<uchar>, @<idx>, and @<hidx> to
+	  base op.
+	* lib/review/htmlbuilder.rb, lib/review/latexbuilder.rb:
+	  support @<uchar> op.
+	* test/test_htmlbuilder.rb, test/test_latexbuilder.rb,
+	  test/test_idgxmlbuilder.rb: add test for @<uchar>.
+
+Sun Nov  7 17:23:12 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/latexbuilder.rb: support //indepimage.
+	* lib/review/htmlbuilder.rb, lib/review/idgxmlbuilder.rb: accept
+	  (though just ignore) metric option of //indepimage.
+
+Sun Nov  7 15:20:16 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: use <u> instead of <underline> for underline.
+
+Sun Nov  7 13:20:37 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: support @<tti> and @<ttb> for LATEXBuilder
+
+Sun Nov  7 12:35:11 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: ad-hoc support for //texequation
+	  and @<m>.
+
+Sun Nov  7 12:01:03 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge KADO's branch.
+	 - lib/review/htmlbuilder.rb, lib/review/idgxmlbuilder.rb:
+	   add @ttb op.
+
+Thu Nov  4 20:48:41 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: update colophon in LATEXBuilder.
+
+Thu Nov  4 19:58:20 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker, lib/review/latexbuilder.rb:
+	  use \reviewkw{} for @<kw>, and \reviewkw{} use \textbf{}
+	  and \textgt{} as default
+
+Thu Nov  4 17:29:17 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: only use coverimage file if 'converimage'
+	  attributes has a value(but ignore coverfile).
+
+Thu Nov  4 17:11:56 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* test/test_htmlbuilder.rb, test/test_latexbuilder.rb:
+	  add some inline tests.
+
+Thu Nov  4 17:11:04 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: escape inline_m's content.
+
+Thu Nov  4 07:27:09 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/compiler.rb,
+	  lib/review/htmlbuilder.rb, lib/review/htmlutils.rb,
+	  lib/review/latexbuilder.rb, lib/review/latexutils.rb,
+	  doc/format.rdoc, doc/format.re, doc/format.txt:
+	  add experimental TeX block equation/inline equation support.
+	  add //texequation in LATEXBuilder and HTMLBuilder.
+	  add @<m> op in HTMLBuilder.
+	  add --mathml option to use math_ml.rb library
+	  (http://www.hinet.mydns.jp/?mathml.rb) in HTMLBuilder.
+
+Wed Nov  3 23:44:37 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge KADO's branch.
+	- bin/review-index: add chapter option
+
+Tue Nov  2 19:11:51 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge KADO's branch.
+	- lib/review/htmlbuilder.rb: add chap to image_header
+	- doc/format.rdoc: initial document file for GitHub.
+
+Fri Oct 29 06:23:56 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/uuid.rb, test/test_uuid.rb, doc/ruby-uuid/README,
+	  doc/ruby-uuid/README.ja: uuid library, imported from
+	  git://github.com/shyouhei/ruby-uuid.git
+	  Copyright 2007 URABE, Shyouhei.
+	  (At this time, I prefer to import third party libraries
+	  rather than using gems, to let ReVIEW work on essential
+	  Ruby environments.)
+	* bin/review-epubmaker: use time-based random urnid when
+	  urnid isn't defined.
+	  write <itemref idref="toc" /> only if mytoc is defined.
+	* doc/sample.yaml: modify descriptions of urnid, stylesheet,
+	  colophon, and debug.
+
+Wed Oct 27 02:39:40 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: do not use \begin{table}...\end{table}
+	  if caption is empty (because we cannot use {table} in column section)
+
+Tue Oct 26 12:26:01 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: fix all characters in rightside header are uppercase.
+
+Sun Oct 24 04:26:54 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker, lib/review/latexbuilder.rb:
+	  fix caption of //list and //table in LATEXBuilder
+
+Tue Oct 19 15:48:44 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: add //tsize and //latextsize for table in LATEXBuilder
+
+Tue Oct 19 12:54:40 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: not use shortstack without @<br>
+
+Sun Oct 17 01:03:43 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: LATEXBuilder supports //memo command
+
+Wed Oct 13 21:03:25 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb: drop support for multichoice
+	  and singlechoice. They need more sophisticated symbols
+	  (don't use misleading multibyte characters).
+
+Wed Oct 13 20:54:39 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* support ruby 1.9.
+
+Sat Sep 11 19:15:59 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb, lib/review/htmlbuilder.rb,
+	  lib/review/index.rb: support //indepimage.
+
+Sat Sep 11 18:29:39 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, bin/review-vol, lib/review/book.rb,
+	  lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/index.rb,
+	  lib/review/latexbuilder.rb, test/*.rb:
+	  manage parameters by ReVIEW.book.param.
+	* bin/review-preproc, lib/review/preprocessor.rb:
+	  manage preprocessor parameters by Preprocessor.param.
+	* lib/review/buildedr.rb: handle encoding conversions by
+	  Builder#convert_outencoding.
+
+Sat Sep 11 16:28:32 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/latexbuilder.rb, lib/review/htmlbuilder.rb:
+	  support [nonum] in headlines.
+
+Fri Sep 10 19:33:27 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb, test/test_htmlbuilder.rb: 
+	  revert to use double quote for element attributes.
+
+Thu Sep  9 22:21:22 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: 
+	  - use single quote for element attributes.
+	  - use 'caption' for the class name of all captions.
+	  - surround //source by div class='source-code' instead of
+	    div class='caption-code'.
+	  - surround //emlist and //emlistnum by div class='emlist-code'
+	    instead of div class='code'.
+	  - surround //cmd by div class='cmd-code' instead of div
+	    class='code'.
+	  - surround table by div class='table'.
+	  - use b (bold) for @<kw> instead of span class='kw'.
+	  - use tt (typewriter) for @<code> instead of span
+	    class='inline-code'.
+	* test/test_htmlbuilder.rb: follow single quote changes.
+
+Wed Sep  8 22:24:49 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/htmlbuilder.rb: import all of epubbuilder.rb.
+	  - CSS name changed.
+	    //list caption: toplabel -> listcaption
+	    //source caption: toplabel -> sourcecaption
+	    //image caption: botlabel -> imagecaption
+	    //table caption: toplabel -> tablecaption
+          - //comment is converted as <!-- --> instead of <p class="comment">.
+	  - //image and //numberlessimage are converted as
+	    <div class="image"><img> instead of <p class="img"><img>
+	  - Produce XHTML header/footer contents by default.
+	  - Insert orderded numbers in headers by default. Specifing
+	    --secnolevel=0 prevents all of them.
+	* bin/review-compile, doc/memo-reviewspec.txt, bin/review-epubmaker:
+	  Replace string EPUB with HTML to follow HTMLBuilder changes.
+
+Sat Sep  4 11:53:31 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: add bloks: emlistnum, listnum, reviewlistcaption, source, flushright
+
+Sat Sep  4 11:45:36 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb: add inlines: @<i>,@<idx>,@<hidx>,@<dtp>,@<code>,
+	  @<hd_chap>,@<raw>,@<sub>,@<sup>,@<em>,@<strong>,@<u>
+
+Fri Sep  3 22:50:56 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: make background color of //cmd black
+
+Fri Sep  3 01:01:19 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, bin/review-pdfmaker: use {alltt}
+	  instead of {verbatim} to allow inline in lists and cmds.
+
+Thu Sep  2 23:38:01 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-pdfmaker: add command bin/review-pdfmaker for generating PDF document by LaTeX
+
+Thu Sep  2 13:24:24 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* lib/review/latexbuilder.rb, test/test_latexbuilder.rb: add op @<br>{} into LaTeXBuilder.
+
+Thu Sep  2 12:05:58 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* add op @<br>{}.
+
+Wed Sep  1 14:43:13 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* Merge git://github.com/akira/review. 52db533ba53a8d9416a17773fdfcf97044f858f0
+	  - added tests for ReVIEW.book
+	  - added tests for ReVIEW::Parameters
+	  - moved get_instance_variables to the Helper module
+	  - added tests for ReVIEW::Book.{load,load_default}
+	  - added tests for ReVIEW::Book.update_rubyenv
+	  - added tests for ReVIEW::ChapterSet
+	  - added tests for ReVIEW::Chapter.intern_pathes
+	  - added tests for index methods of ReVIEW::Chapter
+	  - added tests for ReVIEW::Chapter#on_CHAPS?
+	  - added tests for ReVIEW::Part
+	  - added/modifed ext of contents of CHAPS/PREDEF
+            Can we omit ext of files?
+	  - added a test for ReVIEW::Book#volume
+	  - added a test for ReVIEW::Book#{chapters,chapter,each_chapter}
+	  - added a test for ReVIEW::Book#{part,each_part}
+	  - added a test for ReVIEW::Book#parts
+	  - added a test for ReVIEW::Book#basedir
+	  - added tests for ReVIEW::Book#postscripts
+	  - added tests for ReVIEW::Book#prefaces
+	  - added tests for ReVIEW::Book#{setParameter,parse_chapters}
+	  - added tests for ReVIEW::Book#read_{CHPAS,PART,bib}
+	  - added a test for Book.load_default
+	  - added a test for ReVIEW::Chapter#volume
+	  - added some tests for ReVIEW::Chapter
+	  - added some tests for Builder
+	  - added test for ReVIEW::HTMLUtils
+	  - removed unused setup
+	  - added tests for LineInput
+	  - added rcov task
+
+Sun Aug 22 23:25:44 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* Merge git://github.com/moro/review into moro
+	  - map* from git blob object
+	    with @mapfile(git|<object-spec>).example:
+	      #@mapfile(git|2e725159:src/codes/features/signup_and_login.feature)
+
+Sun Aug 22 23:08:59 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: remove escape_html from table to
+	  avoid double escaping. add @<dtp> op.
+	* test/test_epubbuilder.rb: add test for table to avoid double
+	  escaping.
+	* test/test_idgxmlbuilder.rb: add test unit for IDGXML builder.
+
+Fri Aug 20 14:20:03 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* doc/memo-reviewspec.txt: add document for design of review format.
+
+Sun Aug  8 17:18:03 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* Merge nari's branch. 27a35652ecb5a94d5b36
+	  - lib/review/htmlbuilder.rb: add @<doorquote>, @<talk>
+	  - lib/review/htmlbuilder.rb: support @<href>.
+	  - lib/review/builder.rb: move param parameter to global.
+	  - lib/review/compiler.rb: replace @@hdnumberingmode by @strategy.param.
+	* lib/review/epubbuilder.rb: add @<doorquote>, @<talk>, @<hd_chap>.
+	* lib/review/compiler.rb, lib/review/index.rb: unify coding styles.
+	  fix a typo.
+
+Sun Aug  8 17:01:48 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/epubbuilder.rb: support //box
+	  as global environment.
+	* lib/review/epubbuilder.rb: support @<icon>.
+
+Mon Jul  5 14:42:49 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, lib/review/epubbuilder.rb:
+	  add =[xcolumn] column.
+
+Sun Jul  4 22:28:44 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: support --listinfo in
+	  //box and //insn.
+
+Sat Jul  3 22:50:40 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/idgxmlbuilder.rb:
+	  add --listinfo parameter to make decorating program
+	  list easier.
+
+Tue Jun 22 21:49:10 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb: ignore invalid inline op error
+	  when it is in @<raw> op.
+	* test/test_epubbuilder.rb: add @<raw> op test.
+
+Mon Jun 21 12:12:43 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/builder.rb, lib/review/compiler.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/epubbuilder.rb:
+
+Tue Jun 15 16:34:55 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/preprocessor.rb, bin/review-preproc: support
+	  input/output encoding.
+
+Tue Jun 15 13:24:07 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker, doc/sample.yaml: add mytoc
+	  flag to control whether making own toc or not.
+	* bin/review-epubmaker add takahashim to copyright holder.
+
+Tue Jun 15 12:52:12 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: use copy instead of link.
+
+Tue Jun 15 12:48:36 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker, doc/sample.yaml: handle debug
+	  flag by YAML file.
+
+Wed Jun  9 16:19:57 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: support @<idx> and @<hidx>.
+
+Thu Jun  3 00:45:16 2010  Masayoshi Takahashi  <takahashimm@gmail.com>
+
+	* bin/review-epubmake: support secnolevel
+	* doc/sample.yaml: add secnolevel sample
+
+Tue Jun  1 13:37:09 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* test/test_epubbuilder.rb: fix test string.
+
+Tue Jun  1 13:29:55 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/topbuilder.rb: add @<tti> op. modify some strings.
+
+Tue Jun  1 07:24:47 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch (5842b55c130e1f33fb58350e9c4778ac46a87e0f).
+	- add coverimage attribute in YAML file (to use it as iTunes artwork)
+
+Sun May 30 11:18:55 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch (2d7e0036d1311c8d1ca5)
+	- use id, not name in <a> element (for valid XHTML 1.1)
+	- fix zip format (from epubcheck)
+	- lang attr should not be used in xhtml 1.1 (use only xml:lang attr)
+	- fix invalid <ul> and <li> tags in toc.html
+	- escape value of href attributes in @<href>
+	- fix media-type and opf:role in OPF file
+	- <br/> should be in block element like <p>
+	- fix invalid URL(in namespace)
+	- hide cover page in navigation and add title page to show
+
+Thu May 27 12:57:39 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: support posthook.
+	* doc/sample.yaml: support posthook.
+	* lib/review/compiler.rb: support //raw.
+	* lib/review/epubbuilder.rb: support //memo, //tip, //info,
+	  //planning, //best, //important, //security, //caution,
+	  //notice, //point, //shoot, and @<tti>.
+	* lib/review/idgxmlbuilder.rb: move //raw to compiler.rb.
+
+Wed May 26 15:46:05 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch (4d23d423b4081558880d9f56d7b4d83ea231bd4a).
+	  - fix to use inline tag in footnote of latexbuilder
+	  - fixed escaping in href
+	  - do not show any caption if caption words is empty
+	* lib/review/latexbuilder.rb: use level 2 as temporary level for
+	  columns.
+
+Tue May 25 20:53:44 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch (1feedbcc1cf385af347b2ba398e7f10e70bb8be3)
+	  - add tests of label and href in epubbuilder
+	  - add tests of label and href in latexbuilder
+	  - add //label op and support \ref in latexbuilder
+	  - add @<href> for latexbuilder
+
+Tue May 25 15:17:23 2010  Kenshi Muto  <kmuto@topstudio.co.jp>
+
+	* lib/review/builder.rb, lib/review/compiler.rb,
+	  lib/review/idgxmlbuilder.rb, lib/review/epubbuilder.rb:
+	  add @<href> and //label op.
+
+Tue May 25 14:40:53 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker, lib/review/epubbuider.rb, doc/sample.yaml:
+	  add toc into epub.
+
+Tue May 25 11:37:54 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch (2d2944a63fae79586c3c1bf70aeed6e293f36393)
+	  - lib/review/latexbuilder.rb: supported secnolevel.
+	  - test/: added tests.
+	  - refactoring a method headline()
+
+Mon May 24 14:22:18 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: specify explicitly -0 (uncompress) option
+	  for mimetype.
+	* lib/review/epubbuilder.rb: remove prefix ./ from img href attribute.
+	* bin/review2idgxml, bin/review2top: removed. These files were added
+	  accidentally.
+
+Sat May 22 15:38:18 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* merge takahashim's branch. (279fecca05cdc1cdde5d156215785da6da6c2f11)
+	  - lib/review/htmlbuilder.rb: escape titles of header.
+	    add //parasep.
+	  - lib/review/epubbuilder.rb: escape titles of header.
+	  - lib/review/latexbuilder.rb: don't show the number of
+	    sections.
+	    use quotation env. for //quote.
+	    add //parasep and //read.
+
+Fri May 21 16:50:12 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-index, lib/review/tocprinter.rb: Support
+	  --inencoding and --outencoding.
+
+Fri May 21 16:21:14 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: Add //linebreak and //pagebreak.
+
+Fri May 21 16:17:05 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/sample.css, sample.yaml: Add sample files for
+	  review-epubmaker.
+
+Fri May 21 15:53:41 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-check: modify to use lib/review/book instead of
+	  lib/review/env. Support --inencoding and --outencoding
+	  options.
+
+Tue May 18 16:20:51 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: use <p> instead of <caption>.
+
+Tue May 18 11:16:57 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb, bin/review-epubbuilder:
+	  fix a typo around meta information.
+
+Mon May 17 22:06:50 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: Add //noindent, @<u>.
+
+Mon May 17 15:55:35 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb, bin/review-vol: Fix review-vol to pass
+	  parameters correctly.
+
+Mon May 17 12:14:48 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb: Skip any contents except \A=+
+	  when taking a title.
+
+Mon May 17 12:05:41 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, epubbuilder.rb: add --stylesheet=file
+	  option.
+
+Mon May 17 11:06:46 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: treat comment as HTML comment.
+
+Mon May 17 11:02:33 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/epubbuilder.rb: add //lead as alias of read.
+	  Support dummy //tsize on epubbuilder.
+
+Fri May 14 16:09:41 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: Pass more meta info to opf file.
+
+Fri May 14 15:24:41 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/epubbuilder.rb: Support --level as same as
+	  idgxmlbuilder.
+
+Fri May 14 12:29:53 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: Add toc, cover feature. Fix a link.
+	  Now it works minimum.
+
+Thu May 13 16:40:30 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb, lib/review/index.rb: use a parameter
+	  hash instead of global parameter.
+
+Thu May 13 14:25:08 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/format.txt: Fix a typo. layout/ -> layouts/
+
+Thu May 13 14:15:34 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-epubmaker: initial epub maker (under development)
+	* lib/review/epubbuilder.rb: initial epub builder.
+	* bin/review-compile, lib/review/*.rb: use a parameter hash
+	  instead of global parameter.
+	* lib/review/book.rb: allow SVG as image files.
+
+Fri Apr 30 21:59:34 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: add 'type' attribute in list
+	  element to identify cmd and emlist.
+
+Sun Apr 18 17:15:04 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-validate: check itemized/numbered list in block.
+
+Fri Apr 16 19:31:49 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-validate: add new tool for simple validaton.
+
+Fri Apr 16 19:00:29 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: Remove literal 'page' string from
+	  <pageref>.
+
+Sun Jan 17 16:11:37 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: Support //source, //listnum,
+	  //emlistnum, //bibpaper, @<bib>, @<code>.
+
+Sun Jan 17 11:05:26 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, lib/review/idgxmlbuilder.rb,
+	  lib/review/index.rb: Add --subdirmode option.
+	  If the option is specified, ReVIEW finds images from
+	  images/<chapname>/<id>.<ext> instead of
+	  images/<chapname>-<id>.<ext>.
+
+Sat Jan 16 23:12:56 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* bin/review-compile, bin/review-vol, doc/format.txt,
+	  lib/review/book.rb, lib/review/builder.rb,
+	  lib/review/compiler.rb, lib/review/htmlbuilder.rb,
+	  lib/review/htmllayout.rb, lib/review/idgxmlbuilder.rb,
+	  lib/review/index.rb, lib/review/latexbuilder.rb,
+	  lib/review/tocprinter.rb, lib/review/topbuilder.rb,
+	  lib/review/volume.rb: Merged most of Mr. Narihiro Nakamura's
+	  branch.
+	  New block //source, //listnum, //emlistnum, //bibpaper.
+	  New op @<bib>, @<code>.
+	  Support HTML layout.
+	  Support PART file.
+	  Change default internal character encoding to UTF-8.
+        * bin/review-compile, bin/review-vol, lib/lineinput.rb,
+          lib/review/book.rb, lib/review/builder.rb,
+          lib/review/idgxmlbuilder.rb, lib/review/preprocessor.rb:
+          Add --inencoding and --outencoding option to specify
+          the encoding of source/dest file. Default outencoding is
+          UTF-8. Default inencoding is autodetect.
+          It accepts UTF-8, EUC, JIS and SJIS.
+
+Tue Jan 12 11:13:39 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, doc/format_idg.txt: New op @<uchar>.
+
+Sat Jan  9 09:12:50 2010  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, bin/review-compile,
+	  doc/format_idg.txt: Add --chapref option to modify chapref
+	  decorating.
+
+Tue Dec  8 16:05:48 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb, doc/format_idg.txt: New column
+	  [edition] and [insideout]. New block //shoot.
+
+Fri Nov 27 14:15:25 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* doc/format_idg.txt, lib/review/idgxmlbuilder.rb: New block
+	  //rawblock. Revert //raw.
+
+Thu Nov 26 12:13:00 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: New block //raw.
+
+Tue Nov 24 12:55:52 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: add images/ for searching an image.
+
+Mon Nov 23 23:33:26 2009  Kenshi Muto  <kmuto@debian.org>
+
+        * lib/review/idgxmlbuilder.rb: warn when an image doesn't exist.
+
+Wed Sep  2 13:13:56 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb: fix preface and postscript namelist
+	  support.
+
+Sun Jul 19 13:14:47 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/tocprinter.rb: use Chapter#number to get chapter
+	  number, instead of generating it by myself.  Preface and
+	  postscript does not have chapter number.
+
+Wed Jul  1 21:03:07 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/topbuilder.rb: Add singlechoice and multichoice.
+
+Tue Jun 23 15:11:34 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/idgxmlbuilder.rb: escape HTML of keyword alternative.
+
+Mon Jun 22 08:44:38 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/index.rb: warn duplicate id.
+
+Sat Jun 13 16:11:14 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/book.rb (part): review-index -p causes nil access.
+
+Mon Jun  1 16:01:21 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb: Add basedir path when it calls
+	  ImageIndex.parse. This change may destroy if users define
+	  specific absolete path for image_dir.
+
+Thu May 28 17:21:27 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* lib/review/book.rb: Add env method into Chapter class to
+	  support a backward compatibility for @<chap> tag.
+
+Wed May 27 12:59:20 2009  Kenshi Muto  <kmuto@debian.org>
+
+	* Merged from kmuto branch.
+	* lib/review/idgxmlbuilder.rb: improve handling empty cells.
+	* lib/review/topbuilder.rb: sync styles of topbuilder.rb with
+	  idgxmlbuilder.rb.
+	* lib/review/idgxmlbuilder.rb: warn instead of error when
+	  table size exceeds the limit.
+	* lib/review/idgxmlbuilder.rb: allow null table row.
+	* lib/review/builder.rb, lib/review/idgxmlbuilder.rb,
+	  lib/review/index.rb, lib/review/topbuilder.rb,
+	  lib/review/compiler.rb, doc/format_idg.txt:
+	  support null id/caption table.
+	* lib/review/idgxmlbuilder.rb: maru op supports A-Za-z also.
+	* lib/review/idgxmlbuilder.rb: new block //link.
+	* doc/format_idg.txt: mention about //link.
+	* lib/review/idgxmlbuilder.rb: fix table cell width count.
+	* lib/review/idgxmlbuilder.rb: use <span> for the rerefences of
+	  image, table, and list.
+        * lib/review/idgxmlbuilder.rb, doc/format_idg.txt: new single
+	  command //tsize.
+	* bin/review-compile, lib/review/idgxmlbuilder.rb: add -nolfinxml
+	  option to remove all LFs from XML elements.
+	* lib/review/compiler.rb, lib/review/idgxmlbuilder.rb:
+	  Use \t prefix of <p> as indented list level.
+	* lib/review/idgxmlbuilder.rb: remove \n from <quote>.
+	* lib/review/idgxmlbuilder.rb: new column style [world] and
+	  [hood].
+	* lib/review/idgxmlbuilder.rb: new block //memo, //tip, //info,
+	  //planning, //best, //security and //caution.
+	* doc/format_idg.txt: mention about added tags.
+	* lib/review/idgxmlbuilder.rb: do escape html for
+	  some captions.
+	* lib/review/idgxmlbuilder.rb, lib/review/topbuilder.rb:
+	  new op @<balloon>.
+	* doc/format_idg.txt: mention about @<balloon>.
+	* lib/review/idgxmlbuilder.rb, bin/review-compile:
+	  add --table option to specify the width of tables and
+	  make tables InDesign table objects.
+	* lib/review/topbuilder.rb: fix column_begin to accept
+	  label parameter.
+	* lib/review/idgxmlbuilder.rb: new op @<u>, @<icon>, @<ref>,
+	  @<pageref>.
+	* lib/review/topbuilder.rb: ditto.
+	* lib/review/idgxmlbuilder.rb: use <caption> tag instead of
+	  <title> in quotedlist and box blocks.
+	  move an image header to the bottom of an image.
+	* lib/review/idgxmlbuilder.rb, lib/review/topbuilder.rb,
+	  lib/review/compiler.rb: emlist and cmd block may have a
+	  caption.
+	* lib/review/idgxmlbuilder.rb, lib/review/topbuilder.rb,
+	  lib/review/compiler.rb, lib/review/htmlbuilder.rb:
+	  hand over the number value of <ol> to ol_item.
+	* lib/review/idgxmlbuilder.rb: use \A for finding a head instead
+	  of ^.
+	* lib/review/latexbuilder.rb, lib/review/idgxmlbuilder.rb,
+	  lib/review/topbuilder.rb, lib/review/compiler.rb,
+	  lib/review/htmlbuilder.rb: add {label} option into headers.
+	  label may be reffered by @<ref> op.
+	* lib/review/topbuilder.rb: sync ops and blocks with
+	  idgxmlbuilder.
+	* lib/review/idgxmlbuilder.rb: box caption is optional.
+	* doc/format_idg.txt: mention about return, //label and
+	  @<labelref>.
+	* lib/review/idgxmlbuilder.rb: new inline op @<labelref>, @<tti>.
+	  new block //label.
+	* lib/review/idgxmlbuilder.rb: call compile_inline instead of
+	  escape_html for <footnote> and <ruby>.
+	* lib/review/idgxmlbuilder.rb: new block //lead.
+	* doc/format_idg.txt: mention about //point.
+	* lib/review/idgxmlbuilder.rb: new block //point.
+	* doc/format_idg.txt: mention about nonum and circle option.
+	* lib/review/idgxmlbuilder.rb: new header option [circle].
+	* doc/format_idg.txt: mention about //important, //notice,
+	  @<maru>, @<keytop>.
+	* lib/review/idgxmlbuilder.rb: new inine op @<keytop>, @<maru>.
+	* lib/review/idgxmlbuilder.rb: escape index strings of @<ttbold>
+	  before embedding.
+	* lib/review/book.rb: increase maximum section level to 5.
+	* lib/review/idgxmlbuilder.rb: new inline op @<raw>.
+	  //notice may have a caption.
+	* lib/review/idgxmlbuilder.rb: //note and //important may have
+	  a caption.
+	* lib/review/idgxmlbuilder.rb: embed index information to
+	  @<ttbold>.
+	* doc/format_idg.txt: mention about //important and //expert.
+	* lib/review/idgxmlbuilder.rb: new block //expert.
+	* lib/review/idgxmlbuilder.rb, lib/review/compiler.rb: support
+	  choice list. "space + white box" becomes multiple choice list.
+	  "space + white circle" becomes single choice list.
+	* lib/review/idgxmlbuilder.rb, bin/review-compile: add
+	  --level option. idgxmlbuilder sets a number to the headers up
+	  to specified value.
+	* doc/format_idg.txt: mention about //important, //notice, //term,
+	  //reference.
+	* lib/review/idgxmlbuilder.rb: new block //important, //notice,
+	  //reference, and //term.
+	* lib/review/idgxmlbuilder.rb: surround a table by <tbody> tag.
+	* lib/review/idgxmlbuilder.rb: no need to convert &quot, &lt,
+	  and &gt.
+	* doc/format_idg.txt: new documentation for InDesign builder.
+	* lib/review/idgxmlbuilder.rb: output table without doing
+	  compile_inline. compile_inline caused a duplicated character
+	  escape.
+	* bin/review-index, lib/review/tocprinter.rb: support XML format
+	  output.
+	* lib/review/idgxmlbuilder.rb: new op @<hint>.
+	* lib/review/idgxmlbuilder.rb: new block //insn.
+	* lib/review/idgxmlbuilder.rb: new inline op @<sup>, @<sub>,
+	  @<dtp>, @<ttbold>.
+	  new block //flushright, //raw, //indepimage, //note, //practice,
+	  //box.
+	* lib/review/idgxmlbuilder.rb: correct an index expression of
+	  @<kw>.
+	* make branches/kmuto to implement experimental features.
+	* lib/review/env.rb: support TOCs for a front matter and a rear
+	  matter. PREDEF is for front, POSTDEF is for rear.
+	* lib/review/idgxmlbuilder.rb: new builder for Adobe InDesign.
+
+Sun May 24 23:02:58 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: overwrapped range did not work.
+
+Sun May 24 22:49:12 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: failed on unclosed range.
+
+Sun May 24 21:10:07 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: new directive alias #@map
+	  (equivalent to #@maprange).
+
+Sun May 24 21:04:44 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb (unindent): did not work.  Support
+	  Line objects.
+
+Sat May  2 10:44:50 2009  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/book.rb: treat postscript.re as postscript
+	  automatically.
+
+	* lib/review/book.rb: should use PREDEF, POSTDEF as file
+	  declaration.
+
+	* lib/review/tocparser.rb: could not display Part by review-vol.
+
+	* bin/review-index: do not rely on part position.
+
+Tue Feb 12 05:16:27 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/tocprinter.rb: show volumes on left hand side to
+	  avoid column corruption on Ruby 1.9.
+
+Tue Feb 12 05:04:55 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: adjust total volume column (using SQL "WITH"
+	  style).
+
+Tue Feb 12 04:45:57 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: always use Chapter#volume to get chapter
+	  volumes.  Do not use Chapter#kbytes, n_chars, n_lines.
+
+	* lib/review/book.rb: remove Chapter#kbytes, n_chars, n_lines.
+
+Mon Feb 11 05:41:20 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/tocparser.rb: fix typo.
+
+Sun Feb 10 20:48:20 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/book.rb: move method: Book.intern_pathes ->
+	  Chapter.intern_pathes.
+
+	* bin/review-compile: ditto.
+
+	* lib/review/book.rb (ChapterSet.for_pathes): inherit book
+	  property by using Chapter.intern_pathes.
+
+	* lib/review/book.rb: Chapter.new accept both of chapter id and
+	  path, instead of basename and dirname, to allow generating TOC of
+	  stdin correctly.
+
+	* lib/review/tocparser.rb: ditto.
+
+	* lib/review/volume.rb: ditto.
+
+Sun Feb 10 03:26:12 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: must require review/tocparser to get
+	  TOCPrinter work.
+
+	* lib/review/tocparser.rb: introduce dummy chapter for no-title
+	  chapter such as preface.re.
+
+	* lib/review/tocprinter.rb: refactoring.
+
+Sat Feb  9 23:44:05 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: print program name before error message.
+
+	* lib/review/book.rb: should raise FileNotFound (<
+	  ApplicationError) if manuscript file does not exist.
+
+	* lib/review/exception.rb: new exception class FileNotFound.
+
+	* lib/review/exception.rb: ConfigError, CompileError should
+	  inherit ApplicationError.
+
+	* lib/review/compiler.rb: add inline element dtp officially.
+
+	* lib/review/htmlbuilder.rb: support tagged section column (tmp).
+
+	* lib/review/htmlbuilder.rb: support inline ami (tmp).
+
+	* lib/review/htmlbuilder.rb: support inline dtp.
+
+Sat Feb  9 23:27:22 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: change option: -p -> -P.
+
+	* bin/review-vol: -P did not work.
+
+	* lib/review/book.rb: new method Part#volume.
+
+Sat Feb  9 23:18:28 2008  Minero Aoki  <aamine@loveruby.net>
+
+	bin/review-vol: follow structure change.
+
+	bin/review-compile: ditto.
+
+	bin/review-index: use Book or ChapterSet for tree root.  TOC trees
+	  are got from a Chapter.
+
+	lib/review/book.rb: new method Book#intern_pathes.
+
+	lib/review/book.rb: new method Book#no_part?
+
+	lib/review/book.rb: rename meethod: Book#chaps -> chapters.
+
+	lib/review/book.rb: new method Book#volume.
+
+	lib/review/tocparser.rb: use ReVIEW::Book and ChapterFile for TOC
+	  tree root.
+
+Sat Feb  9 22:11:49 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/unfold.rb: turn on SVN Id.
+
+	* lib/review/tocprinter.rb: ditto.
+
+	* lib/review/book.rb: ditto.
+
+	* lib/review/volume.rb: ditto.
+
+Sat Feb  9 22:07:09 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/chapterfile.rb -> book.rb
+
+Sat Feb  9 22:06:36 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: use TOCParser directly, Book is now different
+	  class.
+
+	* lib/review/chapterfile.rb: merge env.rb.
+
+	* lib/review/chapterfile.rb: rename class: Environment -> Book.
+
+	* lib/review/chapterfile.rb: new class Part.
+
+	* lib/review/chapterfile.rb: rename class: ChapterFile -> Chapter.
+
+	* lib/review/env.rb: removed (merged in to chapterfile.rb).
+
+	* lib/review/book.rb -> tocparser.rb.
+
+Sun Jan  6 02:17:35 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: Ruby 1.9 prints an array as array,
+	  not lines.
+
+Sun Jan  6 02:04:21 2008  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: new directive #@defvar.
+
+	* lib/review/preprocessor.rb: refactoring: extract method:
+	  #replace_block.
+
+	* lib/review/preprocessor.rb: refactoring: split big "when" clause
+	  which processes #@map directive.
+
+	* lib/review/preprocessor.rb: refactoring: objectify line: new
+	  class `Line' introduced.
+
+	* lib/review/preprocessor.rb: refactoring: objectify directive:
+	  new class `Directive' introduced.
+
+	* lib/review/preprocessor.rb: refactoring: remove useless old
+	  lvars, codes.
+
+Mon Dec 31 16:20:03 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: raise error if $DEBUG is on.
+
+	* bin/review-index: ditto.
+
+	* bin/review-compile: ditto.
+
+	* bin/review-preproc: ditto.
+
+	* lib/review/builder.rb: add magic tag -*- encoding: EUC-JP -*- to
+	  support Ruby 1.9 M17N.
+
+	* lib/review/index.rb: ditto.
+
+	* lib/review/topbuilder.rb: ditto.
+
+	* lib/review/compiler.rb: ditto.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+Sun Dec 30 15:13:11 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: $KCODE does not effect on Ruby 1.9.0.
+
+	* bin/review-index: ditto.
+
+	* bin/review-compile: ditto.
+
+	* bin/review-preproc: ditto.
+
+	* bin/review-check: ditto.
+
+	* lib/review/compat.rb: define String#bytesize and #charsize.
+
+	* lib/review/book.rb: use them.
+
+	* lib/review/volume.rb: ditto.
+
+	* lib/review/compiler.rb: modify varname.
+
+Mon Dec 24 16:06:03 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: add review libdir to the load path.
+
+	* bin/review-checkdep: ditto.
+
+	* bin/review-index: ditto.
+
+	* bin/review-compile: ditto.
+
+	* bin/review-preproc: ditto.
+
+	* bin/review-check: ditto.
+
+Mon Dec 24 15:56:15 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/compiler.rb: @<ami> is standard inline.
+
+	* lib/review/topbuilder.rb: support @<ami>.
+
+Thu Mar  1 18:38:09 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/tocprinter.rb (print_children): fix side-by-side bug.
+	  --level=2 should print only level-1 and level-2 section, not
+	  level-3 section.
+
+	* lib/review/book.rb: add #inspect for Node classes.
+
+	* bin/review-index: check value of --level.
+
+Thu Feb 15 09:52:23 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: get chapter number from ChapterFile.
+
+	* lib/review/tocprinter.rb: ditto.
+
+	* lib/review/book.rb: ditto.
+
+Thu Feb 15 09:36:23 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/latexbuilder.rb (table_begin, table_end): output
+	  \reviewtable macro instead of LaTeX native \tabulate.
+
+Thu Feb 15 09:17:16 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/latexbuilder.rb: use ReVIEW object counter (tmp fix).
+
+Thu Feb 15 08:47:23 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/latexbuilder.rb: output \reviewlistlabel,
+	  \reviewtablelabel and its refering labels.
+
+	* lib/review/env.rb: add preface.re and appendix.re to the chapter
+	  list automatically.
+
+	* lib/review/chapterfile.rb: new method ChapterFile#inspect for
+	  debug.
+
+Thu Feb 15 08:12:27 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/compiler.rb: define optional 2nd argument of //image.
+
+	* lib/review/builder.rb (image): handle optional 2nd arg, metric.
+
+	* lib/review/latexbuilder.rb (image_image): write metric
+	  parameter.
+
+	* lib/review/htmlbuilder.rb (image_image): ignore metric
+	  parameter.
+
+	* lib/review/latexbuilder.rb (inline_bou): allow break between
+	  bouten chars.
+
+	* lib/review/index.rb: allow access to ImageIndex::Item#pathes.
+
+Tue Feb  6 00:01:35 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-checkdep: new command (tmp).
+
+Sun Feb  4 02:54:51 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/builder.rb: IndexError -> KeyError.
+
+Sun Feb  4 02:54:29 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/unfold.rb: new method
+	  ReVIEW::Unfold.unfold_author_source.
+
+	* lib/review/unfold.rb: new method ReVIEW::Unfold.unfold.
+
+	* lib/review/unfold.rb: fix typo.
+
+Sun Feb  4 01:15:49 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-preproc: fork review/unfold.rb.
+
+	* lib/review/unfold.rb: new file.
+
+Sun Feb  4 00:58:16 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/chapterfile.rb: ChapterFile#image_number,
+	  #image_file, ... are obsolete; use image(id).number,
+	  image(id).path, ...
+
+	* lib/review/index.rb: new method ImageIndex::Item#bound?, #path.
+
+	* lib/review/builder.rb: follow these changes.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/latexbuilder.rb: ditto.
+
+	* lib/review/topbuilder.rb: ditto.
+
+Sat Feb  3 22:59:31 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: do not allow empty file list.
+
+Sat Feb  3 22:56:08 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: check grammar strictly on --check.
+
+	* lib/review/builder.rb: change initialize protocol.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/latexbuilder.rb: ditto.
+
+	* lib/review/topbuilder.rb: ditto.
+
+Sat Feb  3 21:59:41 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/index.rb: __send -> __send__.
+
+	* lib/review/compat.rb: do not use __send/__send!.
+
+Sat Feb  3 21:46:09 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/compiler.rb: refactoring.
+
+Sat Feb  3 21:45:08 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: use compiler.strategy.extname instead of
+	  compiler.ext.
+
+	* lib/review/latexbuilder.rb: define #extname.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+Tue Jan 30 20:49:47 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: call ruby via /usr/bin/env.
+
+	* bin/review-preproc: ditto.
+
+Mon Jan 29 15:22:51 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/volume.rb: reject spaces on calculating volume.
+
+	* lib/review/book.rb: ditto.
+
+Mon Jan 29 15:04:41 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-vol: fork review/volume.rb.
+
+	* bin/review-index: utilize ReVIEW::Entry's class methods.
+
+	* bin/review-compile: ignore SIGPIPE.
+
+	* bin/review-check: set $KCODE explicitly.
+
+	* lib/review/volume.rb: new file.
+
+	* lib/review/book.rb: FileSpec -> Entry.
+
+	* lib/review/book.rb: new method Entry#title.
+
+	* lib/review/book.rb: new method Entry#volume.
+
+	* lib/review/book.rb: new method Entry#kbytes, #bytes, #chars,
+	  #lines.
+
+	* lib/review/book.rb: Book.parse_files -> parse_entries.
+
+	* lib/review/book.rb: new class Chapter.
+
+	* lib/review/env.rb: fork chapterfile.rb.
+
+	* lib/review/chapterfile.rb: new file.
+
+	* lib/review/compiler.rb: DropComment -> Preprocessor::Strip.
+
+	* lib/review/dropcomment.rb: removed (use Preprocessor::Strip).
+
+	* lib/review/preprocessor.rb (unindent): reduce warning.
+
+	* lib/review/tocprinter.rb (TextTOCPrinter): print KB/Chars for
+	  chapters.
+
+Mon Jan 29 12:10:02 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: must set $KCODE.
+
+	* lib/review/latexbuilder.rb: implement @<bou>.
+
+	* lib/review/compiler.rb: reduce warning.
+
+	* lib/review/env.rb: temporary fix for current ruby 1.9.
+
+Mon Jan 29 11:29:21 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-list -> review-vol.
+
+	* bin/review-vol: print kbytes, n-chars, n-lines.
+
+Mon Jan 29 10:47:21 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: refactoring: extract lib/review/tocprinter.
+
+	* lib/review/tocprinter.rb: new file.
+
+Mon Jan 29 10:41:35 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: refactoring: extract class TOCPrinter,
+	  TextPrinter, HTMLPrinter.
+
+Sun Jan 28 05:46:04 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/builder.rb (image): pass caption to image_dummy.
+
+	* lib/review/latexbuilder.rb (image_image): image is always bound
+	  here, check is not required.
+
+	* lib/review/latexbuilder.rb (image_dummy): always show (empty)
+	  text and image caption, \label.
+
+	* lib/review/latexbuilder.rb (compile_kw): fix syntax error.
+
+	* lib/review/htmlbuilder.rb: now Builder#image does not call
+	  image_header, call it from image_image/dummy.
+
+Sun Jan 28 04:23:05 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/latexbuilder.rb (inline_kw): do not emphasis alt
+	  word.
+
+Sat Jan 27 07:25:49 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/index.rb: silently ignore if directory images/ not
+	  exist.
+
+Sat Jan 27 07:24:53 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/latexbuilder.rb: add `review' prefix to macro names.
+
+Fri Jan 26 04:03:09 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: rescue ReVIEW::ApplicationError.
+
+	* lib/review/index.rb: Index.parse never fails.
+
+	* lib/review/env.rb: ditto.
+
+	* lib/review/compiler.rb: new method Location#to_s.
+
+	* lib/review/builder.rb: use it.
+
+	* lib/review/compiler.rb: new syntax //quote.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/latexbuilder.rb: ditto.
+
+	* lib/review/latexbuilder.rb: catch up current
+	  compiler.rb/builder.rb.
+
+Fri Jan 26 01:48:39 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: get file extension from builder.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/latexbuilder.rb: ditto.
+
+	* lib/review/builder.rb: ditto.
+
+	* lib/review/compiler.rb: //image block is optional.
+
+	* lib/review/htmlbuilder.rb: output warning/error unless no_error
+	  mode.
+
+	* lib/review/latexbuilder.rb (table_begin): show table border.
+
+	* lib/review/latexbuilder.rb (table_begin, table_separator, tr):
+	  support hline.
+
+	* lib/review/latexbuilder.rb (ol_item): fix syntax error.
+
+	* lib/review/builder.rb: fix exception class name.
+
+Thu Jan 25 00:05:02 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-preproc: new option --final.
+
+	* lib/review/preprocessor.rb: new mehtod Preprocessor.strip.
+
+	* lib/review/preprocessor.rb: new class Preprocessor::Strip.
+
+Sun Jan 21 09:52:28 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-compile: new option -a/--all.
+
+	* lib/review/latexbuilder.rb: work again.
+
+	* lib/review/builder.rb: new inline op @<chapref>.
+
+	* lib/review/builder.rb (print, puts): should take 0- args.
+
+	* lib/review/builder.rb (image_dummy): should take 2 args, id and
+	  caption.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/env.rb: Ruby 1.9 does not have String#to_a.
+
+	* lib/review/index.rb (ChapterIndex): returns Japanese string
+	  (tmp).
+
+Sun Jan 21 08:33:17 2007  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/env.rb (read_CHAPS): return *.re if CHAPS not exist.
+
+Sun Oct 22 09:02:26 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/compat.rb: new file.  Provide Object#__send,
+	  #__send!, String#lines.
+
+	* lib/review/compiler.rb: use them.
+
+	* lib/review/env.rb: ditto.
+
+	* lib/review/index.rb: ditto.
+
+Thu Aug 10 23:02:55 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/htmlbuilder.rb: block text is already processed by
+	  #nofunc_text.
+
+Sat May 13 09:09:00 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review2 -> bin/review-compile.
+
+	* bin/review-compile: new option --check.
+
+	* bin/review-index: new option --html.
+
+	* lib/review/topbuilder.rb: new builder.
+
+	* lib/review/compiler.rb: compile inline triggers in lists.
+
+	* lib/review/compiler.rb: new syntax "===[column] ...."
+
+	* lib/review/env.rb: new class ReVIEW::Chapter.
+
+Sat Apr 15 12:05:07 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/lineinput.rb: new file (tmp).
+
+Sat Apr 15 12:02:55 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review2: new option --directory.
+
+	* lib/review/builder.rb: got chapter number from driver.
+
+Sat Apr 15 11:22:46 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/builder.rb: add adjust_n_cols.
+
+	* lib/review/htmlbuilder.rb: remove adjust_n_cols.
+
+Sat Apr 15 11:22:07 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review2: ignore SIGPIPE/EPIPE.
+
+Sat Apr 15 11:21:07 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* setup.rb: update to latest version.
+
+Sun Apr  9 17:22:03 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/builder.rb: remove ad-hoc code.
+
+	* lib/review/index.rb: resolve number format ad-hocly.
+
+	* lib/review/htmlbuilder.rb: implement @<i>.
+
+Sun Apr  9 16:18:41 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review2: load environment from file's basedir.
+
+	* lib/review/env.rb: ditto.
+
+	* lib/review/builder.rb: implment //footnote and @<fn> (tmp).
+
+	* lib/review/compiler.rb: ditto.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+	* lib/review/compiler.rb: *Index should be loaded for each files.
+
+Tue Apr  4 09:06:16 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-preproc: new option -c,--check.
+
+	* lib/review/preprocessor.rb: #@ok is known tag.
+
+Tue Apr  4 08:43:40 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/env.rb: #parts, #chaps returns an Array of Chapter.
+
+	* bin/review-check: follow it.
+
+	* bin/review-index: ditto.
+
+	* bin/review-list: ditto.
+
+Tue Apr  4 08:31:13 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: show filename in error message.
+
+Thu Mar 23 23:53:50 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/htmlbuilder.rb: support //comment.
+
+Thu Mar 23 23:41:46 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: new option --strip.
+
+	* lib/review/builder.rb: avoid appending int (fix incomplete).
+
+	* lib/review/env.rb (new): provide default value.
+
+	* lib/review/env.rb (new): load review-ext.rb from basedir if
+	  exist.
+
+Sun Mar 19 11:40:39 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: add copyright header.
+
+Sun Mar 19 11:40:00 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-preproc: remove tmp file.
+
+Sat Mar 18 17:12:27 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-index: rescue Errno::NOENT.
+
+Sat Mar 18 17:11:23 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/env.rb: new parameter PAPER.
+
+Sat Mar 18 16:35:19 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-list: rescue application errors.
+
+Sat Mar 18 16:30:33 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-check: new option --all-chapters.
+
+	* bin/review-check: new option --section.
+
+	* bin/review-check: new option --text.
+
+	* lib/review/utils.rb: removed.
+
+Sat Mar 18 16:29:36 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/env.rb: allow no PARAMS file.
+
+Sat Mar 18 15:46:40 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-preproc: add prefix ReVIEW.
+
+	* lib/review/preprocessor.rb: support preproc comment #@#.
+
+	* lib/review/errorutils.rb: removed.
+
+Sat Mar 18 15:19:58 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/preprocessor.rb: allow #@@{ ... #@@} style.
+
+Sat Mar 18 15:10:18 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/*.rb: unify copyright year.
+
+Sat Mar 18 14:55:50 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-check: use review/env.
+
+	* bin/review-index: use review/env and review/book.
+
+	* bin/review-list: use review/env.
+
+	* lib/review/book.rb: new file.
+
+	* lib/review/const.rb: removed.  Use review/env.
+
+	* lib/review/strip.rb: removed.  Use review/dropcomment.
+
+	* lib/review/compiler.rb (text): unknown inline op caused error.
+
+	* lib/review/dropcomment.rb: add file header.
+
+	* lib/review/env.rb: new const ReVIEW::EXT.
+
+	* lib/review/env.rb (Environment.load): give default values.
+
+	* lib/review/env.rb: new method Environment#parts.
+
+	* lib/review/env.rb: new method Environment#page_metric.
+
+	* lib/review/env.rb: new method Environment#chapter_file.
+
+	* lib/review/env.rb: new method Environment#index_file.
+
+	* lib/review/env.rb: new method Environment#reject_file.
+
+	* lib/review/env.rb: new method Environment#nocode_file.
+
+	* lib/review/env.rb: new method Environment#predef_file.
+
+	* lib/review/exception.rb: new exception class
+	  ReVIEW::ApplicationError.
+
+	* lib/review/index.rb: extension is .re, not .rd.
+
+Sat Mar 18 12:13:59 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review: *Builder.new accepts an array of indexes.
+
+	* lib/review/builder.rb: inline_*0 -> compile_*.
+
+	* lib/review/htmlbuilder.rb: ditto.
+
+Mon Mar 13 08:04:09 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/compiler.rb: pass self to strategy.
+
+	* lib/review/builder.rb (table): compile each cell.
+
+Mon Mar 13 07:33:39 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/builder.rb: each_block_line -> lines.each.
+
+Fri Mar 10 20:20:41 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-check: new file.
+
+	* lib/review/const.rb: new method ReVIEW.WORDS_FILE (tmp).
+
+Fri Mar 10 20:19:55 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review-list: fix bug.
+
+Sat Feb 11 19:14:20 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* lib/review/const.rb: use indirect access for user-defined
+	  constants.
+
+	* bin/review-list: ditto.
+
+	* bin/review-index: ditto.
+
+Sat Feb 11 19:13:37 2006  Minero Aoki  <aamine@loveruby.net>
+
+	* bin/review2: command name is review2.
+

@@ -1,0 +1,72 @@
+## config.yml for sample book
+
+bookname: book
+language: ja
+booktitle: Re:VIEWサンプル書籍
+urnid: urn:uid:http://reviewml.com/books/review-sample-book/
+# isbn: null
+aut: Re:VIEW Writers
+pbl: Re:VIEW Publishers
+edt: Re:VIEW Editors
+date: 2016-04-29
+history: [["2011-08-03 v1.0.0版発行"],["2016-04-29 v2.0.0版発行"]]
+rights: (C) 2016 Re:VIEW Commiters
+highlight: null
+htmlext: html
+stylesheet: ["style.css"]
+toc: true
+
+toclevel: 2
+secnolevel: 3
+cover: cover.html
+coverimage: cover.jpg
+# titlepage: null
+# titlefile: null
+# originaltitlefile: null
+# creditfile: null
+# profile: null
+# profiletitle: 著者紹介
+# advfile: null
+colophon: true
+# backcover: null
+# imagedir: images
+# fontdir: fonts
+# image_ext: ["png", "gif", "jpg", "jpeg", "svg", "ttf", "woff", "otf"]
+# font_ext: ["ttf", "woff", "otf"]
+# catalogfile: catalog.yml
+# page_metric: A5
+# page_metric: [40,80,40,80,2]
+# direction: "ltr"
+
+epubmaker:
+  htmlext: xhtml
+#  flattoc: null
+#  flattocindent: true
+#  hook_beforeprocess: null
+#  hook_afterfrontmatter: null
+#  hook_afterbody: null
+#  hook_afterbackmatter: null
+#  hook_aftercopyimage: null
+#  hook_prepack: null
+#  verify_target_images: null
+#  force_include_images: []
+#  cover_linear: null
+#  externallink: true
+
+pdfmaker:
+  texstyle: reviewmacro
+  # texdocumentclass: ["jsbook", "uplatex,oneside"]
+  # texcommand: "uplatex"
+  # texoptions: null
+  # dvicommand: "dvipdfmx"
+  # dvioptions: "-d 5"
+  # hook_beforetexcompile: null
+  # hook_aftertexcompile: null
+  # hook_afterdvipdf: null
+  # image_scale2width: true
+
+webmaker:
+  stylesheet: ["style.css", "style-web.css"]
+
+debug: true
+

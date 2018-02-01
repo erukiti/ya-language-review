@@ -1,0 +1,162 @@
+#!/usr/bin/env ruby
+#
+# Copyright (c) 2010-2017 Kenshi Muto, Minero Aoki
+#               1999-2007 Minero Aoki
+#
+# This program is free software.
+# You can distribute or modify this program under the terms of
+# the GNU LGPL, Lesser General Public License version 2.1.
+# For details of the GNU LGPL, see the file "COPYING".
+#
+
+require 'pathname'
+
+bindir = Pathname.new(__FILE__).realpath.dirname
+$LOAD_PATH.unshift((bindir + '../lib').realpath)
+
+require 'review'
+require 'optparse'
+
+include ReVIEW::TextUtils
+
+def sigmain
+  Signal.trap(:INT) { exit 1 }
+  if RUBY_PLATFORM !~ /mswin(?!ce)|mingw|cygwin|bccwin/
+    Signal.trap(:PIPE, 'IGNORE')
+  end
+  main
+rescue Errno::EPIPE
+  exit 0
+end
+
+def main
+  @config = ReVIEW::Configure.values
+  @book = ReVIEW::Book::Base.load
+  @book.config = @config
+
+  @logger = ReVIEW.logger
+
+  modes = nil
+  files = ARGV unless ARGV.empty?
+  opts = OptionParser.new
+  opts.version = ReVIEW::VERSION
+  opts.on('-a', '--all-chapters', 'Check all chapters.') { files = @book.chapters.map(&:path) }
+  opts.on('-s', '--section N', 'Check section N. (deprecated)') do |n|
+    ents = @book.parts[Integer(n) - 1] or
+      raise ReVIEW::ApplicationError, "section #{n} not exist"
+    files = ents.map(&:path)
+  end
+  opts.on('--text', 'Check text.') { (modes ||= []).push :text }
+  opts.on('--help', 'print this message and quit.') do
+    puts opts.help
+    exit 0
+  end
+  begin
+    opts.parse!
+  rescue OptionParser::ParseError => err
+    @logger.error(err.message)
+    puts opts.help
+    exit 1
+  end
+  unless files
+    @logger.error('no input')
+    exit 1
+  end
+  modes ||= [:text]
+
+  modes.each do |mode|
+    case mode
+    when :text
+      check_text files
+    else
+      raise 'must not happen'
+    end
+  end
+end
+
+def check_text(files)
+  re, neg = words_re("#{@book.basedir}/#{@book.reject_file}")
+  files.each do |path|
+    File.open(path) do |f|
+      each_paragraph(f) do |para, lineno|
+        s = para.join
+        m = re.match(s)
+        next if m.nil? || m[0] == @review_utils_word_ok
+        next if neg and neg =~ s
+        str, offset = find_line(para, re)
+        out = sprintf("%s:%d: %s\n", path, lineno + offset, str)
+        print out
+      end
+    end
+  end
+end
+
+def find_line(lines, re)
+  # single line?
+  lines.each_with_index { |line, idx| return line.gsub(re, '<<<\&>>>'), idx if re =~ line }
+
+  # multiple lines?
+  i = 0
+  while i < lines.size - 1
+    str = lines[i] + lines[i + 1]
+    return str.gsub(re, '<<<\&>>>'), i if re =~ str
+    i += 1
+  end
+
+  raise 'must not happen'
+end
+
+def words_re(rc)
+  words = []
+  nega = []
+  File.foreach(rc) do |line|
+    next if line[0, 1] == '#'
+    if / !/ =~ line
+      line, n = *line.split('!', 2)
+      nega.push n.strip
+    end
+    words.push line.strip
+  end
+  [Regexp.compile(words.join('|')), nega.empty? ? nil : Regexp.compile(nega.join('|'))]
+end
+
+def each_paragraph(f)
+  @review_utils_word_ok = nil
+  while line = f.gets
+    case line
+    when /\A\#@ok\((.*)\)/
+      @review_utils_word_ok = $1
+    when /\A\#@/
+      # do nothing
+      next
+    when %r{\A//caption\{(.*?)//\}}
+      yield [$1], f.filename, f.lineno
+    when %r<\A//\w.*\{\s*\z>
+      while line = f.gets
+        break if %r{//\}} === line
+      end
+    when /\A=/
+      yield [line.slice(/\A=+(?:\[.*?\])?\s+(.*)/, 1).strip], f.lineno
+    when /\A\s*\z/
+      # skip
+      next
+    else
+      buf = [line.strip]
+      lineno = f.lineno
+      while line = f.gets
+        break if line.strip.empty?
+        break if %r{\A(?:=|//[\w\}])} =~ line
+        next if /\A\#@/ =~ line
+        buf.push line.strip
+      end
+      yield buf, lineno
+      @review_utils_word_ok = nil
+    end
+  end
+end
+
+def each_paragraph_line(f, &block)
+  each_paragraph(f) { |para, *| para.each(&block) }
+end
+
+sigmain

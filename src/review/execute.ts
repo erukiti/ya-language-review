@@ -1,53 +1,42 @@
 import * as childProcess from 'child_process'
+import * as os from 'os'
+
 const shellescape = require('any-shell-escape')
 
-const exec = (cmd: string, shell: string, shellopt: string) => {
+const exec = (cmd: string, prefix: string = '') => {
   return new Promise<{ stdout; stderr }>((resolve, reject) => {
-    try {
-      const stdout = childProcess.execFileSync(shell, [shellopt, cmd], {})
-      resolve({ stdout, stderr: '' })
-    } catch (e) {
-      reject(e)
-    }
+    childProcess.exec(prefix + cmd, (err, stdout, stderr) => {
+      if (err) {
+        reject(err)
+      } else {
+        resolve({ stdout, stderr })
+      }
+    })
   })
 }
 
-export const execReviewCompile = (filename: string, shell: string, shellopt: string) => {
+export const execReviewCompile = (filename: string, prefix: string = '') => {
   const cmd = `review compile --target html ${shellescape([filename])}`
-  console.log(cmd)
-  return exec(cmd, shell, shellopt)
+  console.log(prefix, cmd)
+  return exec(cmd, prefix)
 }
 
-export const execReviewCheck = (filename: string, shell: string, shellopt: string) => {
+export const execReviewCheck = (filename: string, prefix: string = '') => {
   const cmd = `review compile -c ${shellescape([filename])}`
-  console.log(cmd)
-  return exec(cmd, shell, shellopt)
+  console.log(prefix, cmd)
+  return exec(cmd, prefix)
 }
 
 const reReviewVersion = /([0-9]+\.[0-9]+\.[0-9]+)/
 
 interface ReviewDetection {
-  detections: Array<{
-    shell: string
-    shellopt: string
-    rubyVersion: string
-    reviewVersion: string
-  }>
+  prefix: string
+  reviewVersion: string
   errors?: Error[]
 }
 
-const detect = async (shell: string, shellopt: string, errors: Error[]) => {
-  const rubyVersion = await exec('ruby --version', shell, shellopt)
-    .then(({ stdout }) => stdout.toString().trim())
-    .catch(err => {
-      errors.push(err)
-      return null
-    })
-  if (!rubyVersion) {
-    return null
-  }
-
-  const reviewVersion = await exec('review compile --version', shell, shellopt)
+const detect = async (errors: Error[], prefix: string = '') => {
+  return exec('review compile --version', prefix)
     .then(({ stdout }) => {
       const matched = reReviewVersion.exec(stdout)
       if (matched) {
@@ -59,24 +48,17 @@ const detect = async (shell: string, shellopt: string, errors: Error[]) => {
       errors.push(err)
       return null
     })
-  if (!reviewVersion) {
-    return null
-  }
-
-  return { shell, shellopt, rubyVersion, reviewVersion }
 }
 
 export const detectReview = async (): Promise<ReviewDetection> => {
-  const shells = [{ shell: 'bash', shellopt: '-c' }]
+  let prefix = ''
+  if (os.platform() === 'win32') {
+    prefix = 'bin\\ruby .\\lib\\ruby\\gems\\2.2.0\\gems\\review-2.4.0\\bin\\'
+  }
   const errors = []
   const detections = []
 
-  for (const shell of shells) {
-    const detection = await detect(shell.shell, shell.shellopt, errors)
-    if (detection) {
-      detections.push(detection)
-    }
-  }
+  const reviewVersion = await detect(errors, prefix)
 
-  return { detections, errors }
+  return { prefix, reviewVersion, errors }
 }

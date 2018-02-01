@@ -11,30 +11,21 @@ export const isReview = () => {
 }
 
 export class Review {
-  private _shell: string
-  private _shellopt: string
-  public rubyVersion: string
+  private _prefix: string
   public reviewVersion: string
 
   public async detect() {
-    const { detections, errors } = await detectReview()
+    const { prefix, reviewVersion, errors } = await detectReview()
 
     const channel = getOutputChannel()
     channel.show(true)
 
-    if (detections.length > 0) {
+    if (reviewVersion) {
       channel.appendLine(`review is detected`)
-      detections.forEach(detection => {
-        channel.appendLine(`prefix: '${detection.shell}'`)
-        channel.appendLine(`ruby: ${detection.rubyVersion}`)
-        channel.appendLine(`review: ${detection.reviewVersion}`)
-      })
-
-      this._shell = detections[0].shell
-      this._shellopt = detections[0].shellopt
-      this.rubyVersion = detections[0].rubyVersion
-      this.reviewVersion = detections[0].reviewVersion
-
+      channel.appendLine(`prefix: '${prefix}'`)
+      channel.appendLine(`review: ${reviewVersion}`)
+      this._prefix = prefix
+      this.reviewVersion = reviewVersion
       return true
     } else {
       channel.appendLine(`review is not detected`)
@@ -46,10 +37,10 @@ export class Review {
   }
 
   public compile(filename: string) {
-    return execReviewCompile(filename, this._shell, this._shellopt)
+    return execReviewCompile(filename, this._prefix)
   }
 
   public syntaxCheck(filename: string) {
-    return syntaxCheck(filename, this._shell, this._shellopt)
+    return syntaxCheck(filename, this._prefix)
   }
 }
