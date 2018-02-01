@@ -16,13 +16,13 @@ const exec = (cmd: string, prefix: string = '') => {
 }
 
 export const execReviewCompile = (filename: string, prefix: string = '') => {
-  const cmd = `review compile --target html ${shellescape([filename])}`
+  const cmd = `review-compile --target html ${shellescape([filename])}`
   console.log(prefix, cmd)
   return exec(cmd, prefix)
 }
 
 export const execReviewCheck = (filename: string, prefix: string = '') => {
-  const cmd = `review compile -c ${shellescape([filename])}`
+  const cmd = `review-compile -c ${shellescape([filename])}`
   console.log(prefix, cmd)
   return exec(cmd, prefix)
 }
@@ -36,7 +36,7 @@ interface ReviewDetection {
 }
 
 const detect = async (errors: Error[], prefix: string = '') => {
-  return exec('review compile --version', prefix)
+  return exec('review-compile --version', prefix)
     .then(({ stdout }) => {
       const matched = reReviewVersion.exec(stdout)
       if (matched) {
@@ -53,7 +53,7 @@ const detect = async (errors: Error[], prefix: string = '') => {
 export const detectReview = async (): Promise<ReviewDetection> => {
   let prefix = ''
   if (os.platform() === 'win32') {
-    prefix = 'bin\\ruby .\\lib\\ruby\\gems\\2.2.0\\gems\\review-2.4.0\\bin\\'
+    prefix = `${__dirname}\\..\\..\\win32\\bin\\ruby ${__dirname}\\..\\..\\win32\\lib\\ruby\\gems\\2.2.0\\gems\\review-2.4.0\\bin\\`
   }
   const errors = []
   const detections = []
