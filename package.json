@@ -88,7 +88,9 @@
     "test": "npm run compile && node ./node_modules/vscode/bin/test"
   },
   "devDependencies": {
+    "@types/jest": "^22.1.2",
     "@types/node": "^9.3.0",
+    "jest": "^22.2.2",
     "prettier": "^1.10.2",
     "tslint": "^5.9.1",
     "tslint-config": "0.0.1",
@@ -99,5 +101,19 @@
   },
   "dependencies": {
     "any-shell-escape": "^0.1.1"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx"
+    ],
+    "transform": {
+      "\\.(ts|tsx)$": "<rootDir>/scripts/preprocessor.js"
+    },
+    "testMatch": [
+      "**/*.test.(ts|tsx|js)"
+    ]
   }
 }
