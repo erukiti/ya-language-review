@@ -16,13 +16,13 @@ const exec = (cmd: string) => {
 }
 
 export const execReviewCompile = (filename: string) => {
-  const cmd = `review compile --target html ${shellescape([filename])}`
+  const cmd = `review-compile --target html ${shellescape([filename])}`
   console.log(cmd)
   return exec(cmd)
 }
 
 export const execReviewCheck = (filename: string) => {
-  const cmd = `review compile -c ${shellescape([filename])}`
+  const cmd = `review-compile -c ${shellescape([filename])}`
   console.log(cmd)
   return exec(cmd)
 }
@@ -41,7 +41,7 @@ export const detectReview = async () => {
       return false
     })
 
-  const reviewVersion = await exec('review compile --version')
+  const reviewVersion = await exec('review-compile --version')
     .then(({ stdout, stderr }) => {
       const matched = reReviewVersion.exec(stdout)
       if (matched) {
